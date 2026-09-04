@@ -1,0 +1,122 @@
+{
+  "_note": "Clase de demostración de Tau Labs. El texto es final (content-slots.json → labs). Los números son consistentes con data/bloque_termico.csv y CONTENT-SOURCES.md: A≈32.210 °C, k≈0.006803 min⁻¹, raíz de T(t)=80 en t≈−85.45 min → ≈12:34:33. La clase es sustituible; las siete etapas y la coherencia numérica no.",
+  "slug": "camara-termica",
+  "notebookPath": "labs / metodos_numericos / 01_camara_termica.ipynb",
+  "ipynb": "/data/labs/camara-termica.ipynb",
+  "runtime": "Python 3.11 · numpy · scipy · pandas",
+  "meta": {
+    "eyebrow": "TAU LABS · CLASE 01",
+    "h1": "Un resultado vale lo que puedas justificar.",
+    "h1Mobile": "¿Cuándo se apagó la cámara térmica?",
+    "lead": "En esta clase reconstruimos un evento que no observamos. Los datos no traen un método pegado: elegimos un modelo, ajustamos parámetros, resolvemos una raíz y preguntamos cuánto cambia la respuesta cuando cambian los supuestos.",
+    "leadMobile": "El registrador volvió después del corte. Tenemos datos del enfriamiento, no del evento. La tarea es reconstruirlo y decir con cuánta confianza.",
+    "chips": ["Métodos Numéricos", "20 celdas", "~50 min", "dataset incluido"]
+  },
+  "compute": {
+    "csv": "/data/bloque_termico.csv",
+    "tSala": 22.4,
+    "tSalaSigma": 0.5,
+    "target": 80.0,
+    "firstMeasurementClock": "14:00",
+    "p0": { "A": 32, "k": 0.007 },
+    "bisectBracket": [-120.0, -60.0],
+    "bisectIters": 20
+  },
+  "rail": ["Planteamiento", "Datos", "Modelo", "Desarrollo", "Solución numérica", "Validación", "Transferencia"],
+  "sections": [
+    {
+      "id": "planteamiento",
+      "label": "01 · PLANTEAMIENTO",
+      "cells": [
+        { "type": "markdown", "h2": "¿Cuándo se apagó la cámara térmica?",
+          "p": ["Durante una prueba, una cámara mantiene un bloque de aluminio a 80.0 °C. Un corte apaga la cámara y reinicia el registrador; cuando vuelve a las 14:00, el bloque ya se está enfriando. Conservamos 24 mediciones posteriores y la temperatura de la sala. ¿Podemos reconstruir a qué hora ocurrió el corte? Es un problema inverso: observamos el efecto y queremos inferir el evento que lo produjo."] },
+        { "type": "chips", "items": ["problema inverso", "EDO de 1er orden", "mínimos cuadrados", "búsqueda de raíces"] },
+        { "type": "pause", "text": "Antes del código: si dos modelos explicaran casi igual los datos posteriores, ¿qué tendrías que revisar antes de confiar en la hora reconstruida?" }
+      ]
+    },
+    {
+      "id": "datos",
+      "label": "02 · DATOS",
+      "cells": [
+        { "type": "code", "n": 1, "source": "import numpy as np\nimport pandas as pd\n\ndf = pd.read_csv(\"data/bloque_termico.csv\")\nT_sala = 22.4\ndf.head(6)" },
+        { "type": "table", "n": 1,
+          "columns": ["", "t_min", "T_bloque_C"],
+          "rows": [
+            ["0", "0", "54.65"], ["1", "10", "52.41"], ["2", "20", "50.60"],
+            ["3", "30", "48.64"], ["4", "40", "46.96"], ["5", "50", "45.26"]
+          ] },
+        { "type": "note", "text": "Dataset de demostración · 24×2 · cada 10 min · sensor modelado ±0.10 °C · T_sala = 22.4 ±0.5 °C" }
+      ]
+    },
+    {
+      "id": "modelo",
+      "label": "03 · MODELO",
+      "cells": [
+        { "type": "markdown",
+          "p": ["Tomamos la ley de enfriamiento de Newton como modelo de primer orden: la velocidad de cambio es proporcional a la diferencia de temperatura entre el bloque y la sala."] },
+        { "type": "formula",
+          "eq": "dT/dt = −k · (T − T<sub>sala</sub>)",
+          "solved": "⇒  T(t) = T<sub>sala</sub> + A · e<sup>−kt</sup>" },
+        { "type": "boxes", "items": [
+          { "label": "SUPUESTOS", "text": "Bloque aproximadamente isotermo · k constante · sala representada por 22.4 °C · sin calentamiento activo tras el corte." },
+          { "label": "LO QUE HAY QUE DECIDIR", "text": "Qué error atribuimos al sensor, si ajustamos temperaturas o una transformación logarítmica y hasta dónde es razonable extrapolar fuera de los datos." }
+        ] }
+      ]
+    },
+    {
+      "id": "desarrollo",
+      "label": "04 · DESARROLLO",
+      "cells": [
+        { "type": "markdown",
+          "p": ["Ajustamos el modelo a la temperatura medida, no a log(T−T_sala). La linealización simplifica el álgebra, pero cambia la forma del error. Elegimos mínimos cuadrados no lineales para mantener el ajuste en la escala observada."] },
+        { "type": "code", "n": 2, "source": "from scipy.optimize import curve_fit\n\ndef T(t, A, k):\n    return T_sala + A*np.exp(-k*t)\n\n(A, k), cov = curve_fit(T, df.t_min, df.T_bloque_C,\n                        p0=(32, 0.007))" },
+        { "type": "output", "n": 2, "kind": "fit",
+          "source": "A = 32.210 °C   k = 0.006803 min⁻¹\nR² = 0.99996   max|residuo| = 0.087 °C" },
+        { "type": "figure", "caption": "temperatura vs tiempo · datos, ajuste y residuales", "fig": "fig. 1" }
+      ]
+    },
+    {
+      "id": "solucion",
+      "label": "05 · SOLUCIÓN NUMÉRICA",
+      "cells": [
+        { "type": "markdown",
+          "p": ["La cámara estaba estabilizada en 80.0 °C antes del corte. Buscamos el tiempo t<0 en que el modelo alcanza esa temperatura. Aquí podríamos despejar; usamos bisección para estudiar un patrón reutilizable y reservamos el despeje como verificación independiente."] },
+        { "type": "code", "n": 3, "source": "def g(t): return T(t, A, k) - 80.0\n\na, b = -120.0, -60.0\nfor n in range(20):\n    m = (a+b)/2\n    if g(a)*g(m) <= 0: b = m\n    else: a = m" },
+        { "type": "output", "n": 3, "kind": "iterations",
+          "source": "n   intervalo (min)          medio\n0   [−120.0, −60.0]         −90.0000\n4   [−86.25, −82.50]        −84.3750\n8   [−85.5469, −85.3125]    −85.4297\n12  [−85.4590, −85.4443]    −85.4517\n19  [−85.4459, −85.4458]    −85.4459" },
+        { "type": "result",
+          "text": "El corte ocurrió ≈<b>85.45 min</b> antes del reinicio: alrededor de las <b>12:34:33</b>.",
+          "aside": { "label": "CONVERGENCIA", "text": "Bisección no es la más rápida: sí mantiene un intervalo que encierra la raíz. El despeje da −85.45 min." } }
+      ]
+    },
+    {
+      "id": "validacion",
+      "label": "06 · VALIDACIÓN",
+      "cells": [
+        { "type": "markdown",
+          "p": ["La precisión algorítmica no es la incertidumbre del problema. Variamos el ajuste, la temperatura de sala y la ventana de datos para ver qué parte de la inferencia es realmente estable."] },
+        { "type": "sensitivity", "items": [
+          { "k": "ajuste (95%)", "v": "−85.9 a −85.0 min" },
+          { "k": "T_sala ±0.5 °C", "v": "−87.4 a −83.5 min" },
+          { "k": "primeros 120 min", "v": "−85.4 min" }
+        ] },
+        { "type": "markdown", "boxed": true,
+          "p": ["La mayor sensibilidad está en T_sala: ±0.5 °C mueve la inferencia casi ±2 min, mucho más que la incertidumbre estadística del ajuste. El algoritmo converge; el modelo domina la confianza."] }
+      ]
+    },
+    {
+      "id": "transferencia",
+      "label": "07 · TRANSFERENCIA",
+      "cells": [
+        { "type": "markdown",
+          "p": ["La estructura se repite: un sistema se acerca exponencialmente a un equilibrio, estimamos sus parámetros con datos y buscamos cuándo cruza un valor. Cambia el contexto; permanecen el modelo, la raíz y la necesidad de validar."] },
+        { "type": "transfer", "items": [
+          { "k": "CIRCUITOS", "titulo": "Descarga RC", "pregunta": "¿Cuándo cruzó 1.8 V?" },
+          { "k": "QUÍMICA", "titulo": "Cinética de primer orden", "pregunta": "¿Cuándo quedó 10%?" },
+          { "k": "CONTROL", "titulo": "Respuesta de primer orden", "pregunta": "¿Cuándo entró en ±2%?" }
+        ] },
+        { "type": "note", "text": "Evaluación: resolver uno de estos contextos con datos nuevos y justificar modelo, método, validación y límites." }
+      ]
+    }
+  ]
+}

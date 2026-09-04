@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="es" data-root="">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Tau Labs · La clase se desarrolla dentro del cuaderno</title>
+<meta name="description" content="En Tau Labs una pregunta real se plantea, se modela con datos, se resuelve numéricamente y se valida en un mismo documento ejecutable. El notebook no es decoración: es el aula.">
+<link rel="icon" href="/assets/img/tau-mark.svg" type="image/svg+xml">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="/assets/css/fonts.css">
+<link rel="stylesheet" href="/assets/css/tokens.css">
+<link rel="stylesheet" href="/assets/css/base.css">
+<link rel="stylesheet" href="/assets/css/components.css">
+<script type="module" src="/assets/js/main.js"></script>
+</head>
+<body>
+<tau-header current="Labs" unit="Labs"></tau-header>
+
+<main>
+  <section class="hero hero--page watermark-host">
+    <div class="wm-anchor"><tau-watermark size="420" style="right:20px;top:-70px"></tau-watermark></div>
+    <div class="hero__inner">
+      <p class="eyebrow">Tau Labs</p>
+      <h1 class="h1-page" style="max-width:880px">La clase se desarrolla dentro del cuaderno.</h1>
+      <p class="lead" style="margin-top:26px">Un problema se plantea, se modela con datos reales, se resuelve numéricamente y se valida en un mismo documento ejecutable. El texto, la notación, el dataset, el código y las gráficas aparecen en el orden en que se piensa.</p>
+      <div class="labs-meta">
+        <span>planteamiento</span><span>datos</span><span>modelo</span><span>solución numérica</span><span>validación</span><span class="has-dataset">transferencia</span>
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="wrap">
+      <h2 class="h2-md" style="margin-bottom:8px">Clases</h2>
+      <p class="body" style="max-width:640px;margin-bottom:40px">Cada clase sigue siete etapas y trae su dataset. Puedes leerla en el sitio, ejecutarla en el navegador o descargar el cuaderno.</p>
+      <div style="border-top:1px solid var(--line-16)">
+        <a class="list-row" href="/labs/camara-termica.html">
+          <span class="list-row__num">01</span>
+          <h3 class="h3-row">¿Cuándo se apagó la cámara térmica?</h3>
+          <p class="list-row__desc body-sm">Métodos Numéricos · reconstruir un evento no observado con enfriamiento de Newton, ajuste por mínimos cuadrados y búsqueda de raíces. Dataset incluido.</p>
+          <span class="list-row__arrow" aria-hidden="true">→</span>
+        </a>
+        <div class="list-row" style="opacity:.55">
+          <span class="list-row__num">02</span>
+          <h3 class="h3-row">En preparación</h3>
+          <p class="list-row__desc body-sm">La siguiente clase está en curaduría. Déjanos tu correo abajo si quieres el aviso.</p>
+          <span class="list-row__arrow" aria-hidden="true"></span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section section--alt section--flush">
+    <div class="wrap wrap--narrow">
+      <h2 class="h2-md">Cómo funciona una clase de Labs</h2>
+      <div class="pair" style="grid-template-columns:1fr 1fr;margin-top:32px">
+        <p class="body">Cada etapa nombra una decisión: qué fenómeno vale la pena, qué modelo asumir, qué método usar, qué comprobar y qué cambia cuando movemos un supuesto. El cuaderno hace visible ese proceso, no sólo el resultado.</p>
+        <p class="body">Las clases nacen como <code>.ipynb</code> reales. En el sitio se pueden recalcular en el navegador —sin instalar nada— o ejecutar con Python real (Pyodide) si lo pides explícitamente.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="section section--sunken section--flush">
+    <div class="wrap wrap--narrow">
+      <tau-newsletter heading="Avisos de nuevas clases"
+        copy="Te escribimos cuando publiquemos la siguiente clase o abramos el programa de Métodos Numéricos."></tau-newsletter>
+    </div>
+  </section>
+</main>
+
+<tau-footer></tau-footer>
+</body>
+</html>

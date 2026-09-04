@@ -1,0 +1,54 @@
+{
+  "_note": "Precedentes y biblioteca de la página Investigación. Formulación prudente y trazada a literatura académica (ver CONTENT-SOURCES.md en la raíz del repo). Sin blogs ni marketing EdTech como evidencia primaria.",
+  "precedentes": [
+    {
+      "nombre": "Múltiples representaciones",
+      "procedencia": "ciencias del aprendizaje",
+      "resolvio": "Mostró que distintas representaciones pueden cumplir funciones distintas y que coordinarlas también se aprende.",
+      "aislado": "Es un marco sobre representación; convertirlo en arquitectura curricular requiere decisiones adicionales."
+    },
+    {
+      "nombre": "Cognitive apprenticeship",
+      "procedencia": "ciencias del aprendizaje",
+      "resolvio": "Propuso hacer visible la práctica experta mediante modelado, coaching, scaffolding, articulación y reflexión.",
+      "aislado": "Es un marco de enseñanza; cada disciplina debe traducirlo a tareas, herramientas y criterios propios."
+    },
+    {
+      "nombre": "Productive failure",
+      "procedencia": "ciencias del aprendizaje",
+      "resolvio": "Mostró que, bajo ciertas condiciones, intentar resolver antes de la instrucción puede mejorar el aprendizaje.",
+      "aislado": "El efecto depende del diseño y la fidelidad; sin esas condiciones, la etiqueta dice más que la evidencia."
+    },
+    {
+      "nombre": "Modelación matemática",
+      "procedencia": "educación matemática",
+      "resolvio": "Trató construir, usar, validar y revisar modelos como una competencia matemática que puede enseñarse.",
+      "aislado": "Tiene literatura y retos de implementación propios; no sustituye por sí sola el resto del currículo."
+    },
+    {
+      "nombre": "Alfabetización disciplinar",
+      "procedencia": "estudios de literacidad",
+      "resolvio": "Mostró que expertos de distintas disciplinas leen, interpretan y argumentan de maneras diferentes.",
+      "aislado": "Llevarla a STEM exige convertir esas prácticas de lectura y argumentación en tareas técnicas concretas."
+    },
+    {
+      "nombre": "Literate programming",
+      "procedencia": "computación",
+      "resolvio": "Integró programa y explicación en un mismo artefacto legible, haciendo explícitas decisiones y estructura.",
+      "aislado": "Nació para escribir software; usar notebooks para aprender exige un diseño pedagógico que el formato no aporta."
+    }
+  ],
+  "biblioteca": [
+    { "tipo": "INFORME", "tema": "ciencia del aprendizaje", "titulo": "How People Learn II", "autoria": "National Academies (NASEM)", "anio": 2018, "relevancia": "Síntesis de consenso sobre aprendizaje, conocimiento previo, expertise, metacognición, contexto y transferencia. Funciona como mapa general, no como receta de instrucción.", "doi": "10.17226/24783" },
+    { "tipo": "INFORME", "tema": "educación STEM", "titulo": "Discipline-Based Education Research", "autoria": "National Research Council", "anio": 2012, "relevancia": "Sintetiza investigación sobre aprendizaje en ciencia e ingeniería y muestra que comprender una disciplina incluye prácticas, representaciones y formas de razonamiento propias.", "doi": "10.17226/13362" },
+    { "tipo": "PEER REVIEW", "tema": "múltiples representaciones", "titulo": "DeFT: Learning with Multiple Representations", "autoria": "Shaaron Ainsworth", "anio": 2006, "relevancia": "Marco para distinguir funciones de varias representaciones, su diseño y las tareas cognitivas que exige coordinarlas. Advierte que añadir representaciones no siempre ayuda.", "doi": "10.1016/j.learninstruc.2006.03.001" },
+    { "tipo": "PEER REVIEW", "tema": "transferencia", "titulo": "When and Where Do We Apply What We Learn?", "autoria": "Barnett & Ceci", "anio": 2002, "relevancia": "Propone una taxonomía de transferencia lejana y muestra que «transferir» depende de varias dimensiones del contexto, la tarea y el conocimiento.", "doi": "10.1037/0033-2909.128.4.612" },
+    { "tipo": "PEER REVIEW", "tema": "expertise", "titulo": "Physics Problems by Experts and Novices", "autoria": "Chi, Feltovich & Glaser", "anio": 1981, "relevancia": "Estudio clásico: expertos y novatos organizan problemas de física de modo distinto; los expertos atienden más a principios subyacentes y los novatos a rasgos superficiales.", "doi": "10.1207/s15516709cog0502_2" },
+    { "tipo": "META-ANÁLISIS", "tema": "productive failure", "titulo": "When Problem Solving Followed by Instruction Works", "autoria": "Sinha & Kapur", "anio": 2021, "relevancia": "Meta-análisis de resolver antes de instrucción. Encuentra ventajas bajo condiciones específicas y efectos mayores cuando el diseño conserva los principios de productive failure.", "doi": "10.3102/00346543211019105" },
+    { "tipo": "META-ANÁLISIS", "tema": "aprendizaje activo", "titulo": "Active Learning in STEM", "autoria": "Freeman et al.", "anio": 2014, "relevancia": "Meta-análisis de cursos STEM universitarios con mejores resultados promedio bajo aprendizaje activo. La categoría agrupa intervenciones distintas; no valida cualquier actividad.", "doi": "10.1073/pnas.1319030111" },
+    { "tipo": "PEER REVIEW", "tema": "alfabetización disciplinar", "titulo": "Teaching Disciplinary Literacy to Adolescents", "autoria": "Timothy & Cynthia Shanahan", "anio": 2008, "relevancia": "Muestra que expertos de matemáticas, química e historia leen textos disciplinares de manera diferente y plantea enseñar esas prácticas dentro de cada área.", "doi": "10.17763/haer.78.1.v62444321p602101" },
+    { "tipo": "LIBRO", "tema": "cognitive apprenticeship", "titulo": "Cognitive Apprenticeship", "autoria": "Collins, Brown & Newman", "anio": 1989, "relevancia": "Propone hacer visibles procesos expertos mediante modelado, coaching, scaffolding, articulación, reflexión y exploración. Es un marco que debe concretarse por disciplina.", "doi": "10.4324/9781315044408-14" },
+    { "tipo": "LIBRO", "tema": "modelación matemática", "titulo": "Modelling and Applications in Mathematics Education", "autoria": "Blum, Galbraith, Henn & Niss", "anio": 2007, "relevancia": "Síntesis del ICMI sobre competencias de modelación, autenticidad, pedagogía, implementación y evaluación. Sitúa construir y validar modelos como parte del aprendizaje matemático.", "doi": "10.1007/978-0-387-29822-1" },
+    { "tipo": "PEER REVIEW", "tema": "literate programming", "titulo": "Literate Programming", "autoria": "Donald E. Knuth", "anio": 1984, "relevancia": "Propone escribir programa y explicación como una unidad legible. No es teoría educativa, pero antecede directamente a notebooks donde código y razonamiento conviven.", "doi": "10.1093/comjnl/27.2.97" }
+  ]
+}

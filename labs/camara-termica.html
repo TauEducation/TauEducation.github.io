@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="es" data-root="">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>¿Cuándo se apagó la cámara térmica? · Tau Labs</title>
+<meta name="description" content="Una clase de Tau Labs sobre métodos numéricos: reconstruir un evento no observado con un modelo de enfriamiento, ajuste por mínimos cuadrados y búsqueda de raíces. El cuaderno es la clase.">
+<link rel="icon" href="/assets/img/tau-mark.svg" type="image/svg+xml">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="/assets/css/fonts.css">
+<link rel="stylesheet" href="/assets/css/tokens.css">
+<link rel="stylesheet" href="/assets/css/base.css">
+<link rel="stylesheet" href="/assets/css/components.css">
+<script type="module" src="/assets/js/main.js"></script>
+</head>
+<body>
+<tau-header current="Labs" unit="Labs"></tau-header>
+
+<main>
+  <section class="hero hero--page watermark-host">
+    <div class="wm-anchor"><tau-watermark size="420" style="right:20px;top:-70px"></tau-watermark></div>
+    <div class="hero__inner" id="labs-hero">
+      <p class="eyebrow">TAU LABS · CLASE 01</p>
+      <h1 class="h1-page">Un resultado vale lo que puedas justificar.</h1>
+      <p class="lead" style="margin-top:26px">En esta clase reconstruimos un evento que no observamos. Los datos no traen un método pegado: elegimos un modelo, ajustamos parámetros, resolvemos una raíz y preguntamos cuánto cambia la respuesta cuando cambian los supuestos.</p>
+      <div class="labs-meta">
+        <span>Métodos Numéricos</span><span>20 celdas</span><span>~50 min</span><span class="has-dataset">dataset incluido</span>
+      </div>
+    </div>
+  </section>
+
+  <section class="section section--flush" style="padding:60px 0 84px">
+    <div class="wrap">
+      <div class="labs-body">
+        <nav class="labs-rail" id="labs-rail" aria-label="Estructura de la clase"></nav>
+        <div class="notebook" id="labs-notebook" data-class="camara-termica">
+          <noscript>
+            <div class="nb-section">
+              <p class="nb-md">Esta clase se desarrolla dentro de un cuaderno interactivo y necesita JavaScript.
+              Puedes <a href="/data/labs/camara-termica.ipynb" download>descargar el cuaderno (.ipynb)</a>
+              y abrirlo en Jupyter, o leer el planteamiento a continuación.</p>
+              <p class="nb-md">Una cámara mantiene un bloque de aluminio a 80.0 °C. Un corte de energía la apaga y
+              reinicia el registrador; cuando vuelve a las 14:00, el bloque ya se enfría. Con 24 mediciones
+              posteriores y la temperatura de la sala, ¿podemos reconstruir a qué hora ocurrió el corte?
+              El modelo de enfriamiento de Newton, un ajuste por mínimos cuadrados y una búsqueda de raíces
+              sitúan el corte ≈ 85.45 min antes del reinicio, alrededor de las 12:34:33 — y la validación
+              muestra que la temperatura de la sala, no el método numérico, domina la incertidumbre.</p>
+            </div>
+          </noscript>
+        </div>
+      </div>
+      <div id="labs-class" data-class="camara-termica" hidden></div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="wrap wrap--narrow" style="display:flex;align-items:center;justify-content:space-between;gap:24px;flex-wrap:wrap">
+      <p class="meta-mono" style="max-width:520px">La evaluación de esta clase es uno de los tres contextos de transferencia, con datos nuevos: justificar modelo, método, validación y límites.</p>
+      <a class="btn btn--primary" href="/data/labs/camara-termica.ipynb" download>Descargar el cuaderno</a>
+    </div>
+  </section>
+
+  <section class="section section--sunken section--flush">
+    <div class="wrap wrap--narrow">
+      <tau-newsletter heading="¿Quieres avisos de nuevas clases de Labs?"
+        copy="Te escribimos cuando publiquemos la siguiente clase o abramos el programa de Métodos Numéricos."></tau-newsletter>
+    </div>
+  </section>
+</main>
+
+<tau-footer></tau-footer>
+</body>
+</html>

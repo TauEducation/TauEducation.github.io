@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="es" data-root="">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Contacto · Tau Education</title>
+<meta name="description" content="Escríbenos para conocer el proyecto, explorar una colaboración, proponer un tema o recibir información sobre próximos programas.">
+<link rel="icon" href="/assets/img/tau-mark.svg" type="image/svg+xml">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="/assets/css/fonts.css">
+<link rel="stylesheet" href="/assets/css/tokens.css">
+<link rel="stylesheet" href="/assets/css/base.css">
+<link rel="stylesheet" href="/assets/css/components.css">
+<script type="module" src="/assets/js/main.js"></script>
+</head>
+<body>
+<tau-header current="Contacto"></tau-header>
+
+<main>
+  <section class="hero hero--page watermark-host">
+    <div class="wm-anchor"><tau-watermark size="380" style="right:20px;top:-70px"></tau-watermark></div>
+    <div class="hero__inner">
+      <p class="eyebrow">Contacto</p>
+      <h1 class="h1-page">Hablemos.</h1>
+      <p class="lead" style="margin-top:26px">Si quieres conocer el proyecto, explorar una colaboración, proponer un tema o recibir información sobre próximos programas, puedes escribirnos.</p>
+    </div>
+  </section>
+
+  <section class="section section--flush" style="padding:72px 0 96px">
+    <div class="wrap" style="display:grid;grid-template-columns:1fr 1fr;gap:56px;align-items:start">
+      <div>
+        <h2 class="h3-card" style="margin-bottom:20px">Datos de contacto</h2>
+        <tau-contact></tau-contact>
+        <p class="meta-mono" style="margin-top:22px">Categorías con las que trabajaremos: Programas · Colaboraciones · Instituciones · Docencia · Investigación · Prensa y contenidos.</p>
+      </div>
+      <div>
+        <h2 class="h3-card" style="margin-bottom:20px">Escríbenos</h2>
+        <form data-tau-form="contact" class="flow" novalidate>
+          <div class="field">
+            <label for="c-name">Nombre</label>
+            <input id="c-name" name="nombre" type="text" required autocomplete="name">
+          </div>
+          <div class="field">
+            <label for="c-email">Correo</label>
+            <input id="c-email" name="email" type="email" required autocomplete="email">
+          </div>
+          <div class="field">
+            <label for="c-topic">Tema</label>
+            <select id="c-topic" name="topic">
+              <option>Programas</option>
+              <option>Colaboraciones</option>
+              <option>Instituciones</option>
+              <option>Docencia</option>
+              <option>Investigación</option>
+              <option>Prensa y contenidos</option>
+              <option>Otro</option>
+            </select>
+          </div>
+          <div class="field">
+            <label for="c-msg">Mensaje</label>
+            <textarea id="c-msg" name="mensaje" required></textarea>
+          </div>
+          <button class="btn btn--primary" type="submit">Enviar mensaje</button>
+          <p class="form-status" data-tau-status aria-live="polite"></p>
+        </form>
+      </div>
+    </div>
+  </section>
+</main>
+
+<tau-footer></tau-footer>
+
+<style>
+  @media (max-width: 820px) { main .wrap[style*="grid"] { display: block !important; } main form { margin-top: 40px; } }
+</style>
+</body>
+</html>

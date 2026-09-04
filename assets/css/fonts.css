@@ -1,0 +1,7 @@
+/* ===========================================================================
+   Fonts — single swap point.
+   v1 loads the three SIL OFL families from Google Fonts. To self-host later,
+   replace this @import with local @font-face rules (woff2, font-display:swap)
+   and drop the <link rel="preconnect"> tags in the page <head>.
+   =========================================================================== */
+@import url('https://fonts.googleapis.com/css2?family=Anta&family=Didact+Gothic&family=IBM+Plex+Mono:wght@400;500&display=swap');

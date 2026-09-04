@@ -1,0 +1,124 @@
+{
+  "_note": "Índice de referencias de Tau Academy. Añade una ficha empujando un objeto al arreglo 'fichas' de la disciplina correspondiente. El esquema de una ficha está en 'modeloFicha'. Verificado para v1: sólo Matemáticas está curada.",
+  "modeloFicha": {
+    "id": "disciplina.slug",
+    "tipo": "TIPO DE ENTRADA",
+    "nivel": "inicial | intermedio | avanzado",
+    "titulo": "Título de la referencia",
+    "autoria": "Autoría · institución/editorial",
+    "anio": "AAAA",
+    "relevancia": "Qué explica de otra forma, para quién sirve y en qué momento del aprendizaje ayuda.",
+    "tags": ["enfoque", "acceso", "conexión"],
+    "enlace": "https://…",
+    "doi": "opcional",
+    "labsRelacionada": "opcional"
+  },
+  "disciplinas": [
+    {
+      "slug": "matematicas",
+      "nombre": "Matemáticas",
+      "orden": ["tipo", "nivel", "enfoque"],
+      "fichas": [
+        {
+          "id": "math.street-fighting",
+          "tipo": "LIBRO · HEURÍSTICAS",
+          "nivel": "intermedio",
+          "titulo": "Street-Fighting Mathematics",
+          "autoria": "Sanjoy Mahajan · MIT Press",
+          "anio": 2010,
+          "relevancia": "Enseña análisis dimensional, casos simples, aproximación y analogía como herramientas de trabajo. Útil cuando el estudiante sabe calcular, pero aún espera que cada problema venga perfectamente especificado.",
+          "tags": ["intuición primero", "aproximación", "acceso abierto"],
+          "enlace": "https://mitpress.mit.edu/9780262514293/street-fighting-mathematics/",
+          "labsRelacionada": "Métodos Numéricos"
+        },
+        {
+          "id": "math.measurement",
+          "tipo": "LIBRO · EXPLORACIÓN",
+          "nivel": "inicial",
+          "titulo": "Measurement",
+          "autoria": "Paul Lockhart · Harvard UP",
+          "anio": 2012,
+          "relevancia": "Presenta geometría y medición como una actividad de descubrimiento: dibujar, conjeturar, argumentar y resolver. Sirve para reencontrar la matemática como práctica antes de convertirla en una lista de técnicas.",
+          "tags": ["geométrico", "problemas", "pago"],
+          "enlace": "https://www.jstor.org/stable/j.ctt2jbt0k",
+          "doi": "10.2307/j.ctt2jbt0k"
+        },
+        {
+          "id": "math.visual-complex",
+          "tipo": "LIBRO · GEOMÉTRICO",
+          "nivel": "avanzado",
+          "titulo": "Visual Complex Analysis",
+          "autoria": "Tristan Needham · Oxford UP",
+          "anio": 2023,
+          "relevancia": "Reorganiza análisis complejo alrededor de geometría y transformaciones, sustituyendo derivaciones opacas por argumentos visuales. Útil tras cálculo, cuando la notación funciona pero la imagen conceptual sigue débil.",
+          "tags": ["geométrico", "transformaciones", "pago"],
+          "enlace": "https://academic.oup.com/book/45765",
+          "doi": "10.1093/oso/9780192868916.001.0001"
+        },
+        {
+          "id": "math.visual-group-theory",
+          "tipo": "LIBRO · VISUAL",
+          "nivel": "intermedio",
+          "titulo": "Visual Group Theory",
+          "autoria": "Nathan Carter · MAA",
+          "anio": 2009,
+          "relevancia": "Introduce teoría de grupos mediante simetrías, diagramas y acciones antes de depender por completo de manipulación simbólica. Ayuda cuando la abstracción parece arbitraria porque todavía no tiene representación.",
+          "tags": ["visual", "álgebra abstracta", "pago"],
+          "enlace": "https://bookstore.ams.org/clrm-32/"
+        },
+        {
+          "id": "math.conceptual-mathematics",
+          "tipo": "LIBRO · ESTRUCTURAL",
+          "nivel": "intermedio",
+          "titulo": "Conceptual Mathematics",
+          "autoria": "Lawvere & Schanuel · Cambridge",
+          "anio": 2009,
+          "relevancia": "Usa categorías, mapas y composición para hacer visibles patrones entre distintas ramas. Sirve cuando el estudiante ya quiere entender qué estructuras se repiten entre dominios.",
+          "tags": ["estructural", "categorías", "pago"],
+          "enlace": "https://www.cambridge.org/highereducation/books/conceptual-mathematics/00772F4CC3D4268200C5EC86B39D415A",
+          "doi": "10.1017/CBO9780511804199"
+        },
+        {
+          "id": "math.concrete-mathematics",
+          "tipo": "LIBRO · COMPUTACIÓN",
+          "nivel": "intermedio",
+          "titulo": "Concrete Mathematics",
+          "autoria": "Graham, Knuth & Patashnik · Addison-Wesley",
+          "anio": 1994,
+          "relevancia": "Mezcla matemáticas discretas y continuas según los problemas que aparecen en computación. Es útil para ver que las fronteras entre materias son decisiones curriculares, no fronteras naturales del razonamiento.",
+          "tags": ["computacional", "problemas", "pago"],
+          "enlace": "https://www.pearson.com/en-us/subject-catalog/p/concrete-mathematics-a-foundation-for-computer-science/P200000000288/9780201558029"
+        },
+        {
+          "id": "math.numerical-methods-work",
+          "tipo": "LIBRO · NUMÉRICO",
+          "nivel": "intermedio",
+          "titulo": "Numerical Methods that Work",
+          "autoria": "Forman S. Acton · MAA",
+          "anio": 1990,
+          "relevancia": "Trata algoritmos numéricos con sentido práctico: estabilidad, singularidades, extrapolación, precisión y estrategia. Ayuda a pasar de «aplicar el método» a preguntar cuándo funciona, cuándo falla y qué error importa.",
+          "tags": ["métodos numéricos", "estrategia", "pago"],
+          "enlace": "https://bookstore.ams.org/SPEC/2",
+          "labsRelacionada": "Métodos Numéricos"
+        },
+        {
+          "id": "math.essence-linear-algebra",
+          "tipo": "VIDEO · SERIE VISUAL",
+          "nivel": "inicial",
+          "titulo": "Essence of Linear Algebra",
+          "autoria": "Grant Sanderson · 3Blue1Brown",
+          "anio": 2016,
+          "relevancia": "Presenta matrices como transformaciones del espacio y da significado geométrico a determinantes, bases y eigenvectores. Conviene antes o junto a un curso formal, no como sustituto de práctica y demostración.",
+          "tags": ["visual", "álgebra lineal", "acceso abierto"],
+          "enlace": "https://www.3blue1brown.com/lessons/eola-preview/"
+        }
+      ]
+    },
+    { "slug": "fisica", "nombre": "Física", "fichas": [] },
+    { "slug": "quimica", "nombre": "Química", "fichas": [] },
+    { "slug": "sistemas", "nombre": "Ing. en Sistemas Computacionales", "fichas": [] },
+    { "slug": "ciberseguridad", "nombre": "Ciberseguridad", "fichas": [] },
+    { "slug": "criptografia", "nombre": "Criptografía", "fichas": [] }
+  ],
+  "disciplinaVacia": "Esta disciplina está en curaduría. Preferimos abrirla con una selección comparable en profundidad a la de Matemáticas antes que publicar dos o tres fichas sueltas."
+}
