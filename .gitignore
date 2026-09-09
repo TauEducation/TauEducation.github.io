@@ -1,12 +1,4 @@
-# OS / editor cruft
-.DS_Store
-Thumbs.db
-desktop.ini
-*.swp
-*~
-.vscode/
-.idea/
-
-# local dev
 node_modules/
-.cache/
+dist/
+*.log
+.DS_Store

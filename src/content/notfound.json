@@ -1,0 +1,27 @@
+{
+  "eyebrow": "Error 404 · recurso no encontrado",
+  "title": "Este punto no está en el dominio.",
+  "body": "La función está definida a ambos lados: el límite existe, pero el valor no. Es un hueco removible. Puedes volver al inicio, explorar Tau Labs o continuar hacia el curso principal.",
+  "exits": [
+    {
+      "label": "Volver al inicio",
+      "href": "/"
+    },
+    {
+      "label": "Explorar Tau Labs",
+      "href": "/labs"
+    },
+    {
+      "label": "Ver el curso principal",
+      "href": "/cursos/fundamentos-matematicos-machine-learning"
+    }
+  ],
+  "figure": {
+    "kind": "removable-discontinuity",
+    "caption": "Discontinuidad removible en x = 1",
+    "figLabel": "fig. 404",
+    "holeLabel": "404",
+    "axisNote": "la página que buscabas"
+  },
+  "equation": "\\lim_{x\\to 1}\\frac{x^{2}-1}{x-1}=2, \\qquad f(1)\\ \\text{no definido}"
+}

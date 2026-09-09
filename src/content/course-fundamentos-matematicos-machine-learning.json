@@ -1,0 +1,119 @@
+{
+  "slug": "fundamentos-matematicos-machine-learning",
+  "eyebrow": "Tau Academy · Curso 01",
+  "title": "Fundamentos Matemáticos para Machine Learning",
+  "lede": "Si ya puedes programar o trabajar con datos pero las matemáticas de Machine Learning aparecen como piezas sueltas, este programa de seis semanas conecta vectores, matrices, loss, gradientes, probabilidad y generalización dentro de una sola historia: cómo aprende un modelo.",
+  "facts": [
+    {
+      "key": "Para quién",
+      "value": "Analistas y developers técnicos"
+    },
+    {
+      "key": "Requisitos",
+      "value": "Álgebra básica y Python básico"
+    },
+    {
+      "key": "Herramientas",
+      "value": "Python y Google Colab"
+    },
+    {
+      "key": "Duración",
+      "value": "6 semanas · 6 actos"
+    }
+  ],
+  "outcomes": [
+    {
+      "n": "01",
+      "text": "Interpretar vectores y matrices dentro de modelos y datasets, no como objetos aislados."
+    },
+    {
+      "n": "02",
+      "text": "Explicar qué representan los parámetros y cómo una combinación lineal produce una predicción."
+    },
+    {
+      "n": "03",
+      "text": "Construir y comparar funciones de pérdida entendiendo qué significa equivocarse para un modelo."
+    },
+    {
+      "n": "04",
+      "text": "Interpretar derivadas y gradientes como sensibilidad y explicar conceptualmente gradient descent."
+    },
+    {
+      "n": "05",
+      "text": "Distinguir ajuste de entrenamiento y generalización, y reconocer señales de overfitting."
+    },
+    {
+      "n": "06",
+      "text": "Leer material introductorio de Machine Learning con mayor autonomía y saber qué estudiar después."
+    }
+  ],
+  "thread": {
+    "title": "El hilo del curso",
+    "equation": "\\hat y=f(x;\\theta) \\qquad \\theta^*=\\arg\\min_\\theta L(\\hat y,y)",
+    "note": "Representar datos, producir una predicción, medir el error y modificar parámetros parece una secuencia de temas distintos. En realidad es una sola historia que vuelve a aparecer durante todo el curso.",
+    "body": "No estudiamos álgebra lineal, cálculo y probabilidad como bloques separados antes de tocar Machine Learning. Cada herramienta aparece cuando el modelo crea una necesidad que podemos ver, experimentar y formalizar."
+  },
+  "modules": {
+    "title": "Seis actos",
+    "summary": "6 actos · notebooks guiados · un hilo narrativo continuo",
+    "rows": [
+      {
+        "n": "01",
+        "title": "Representar datos",
+        "desc": "Vectores, escala, distancia y producto punto para describir datos.",
+        "tag": "visual"
+      },
+      {
+        "n": "02",
+        "title": "Construir predicciones",
+        "desc": "Pesos, combinaciones lineales, matrices y parámetros de un modelo.",
+        "tag": "simulación"
+      },
+      {
+        "n": "03",
+        "title": "Medir el error",
+        "desc": "Residuos, normas, MAE, MSE y decisiones incorporadas en una loss.",
+        "tag": "caso real"
+      },
+      {
+        "n": "04",
+        "title": "Aprender del error",
+        "desc": "Derivadas, gradiente, learning rate y descenso de gradiente desde cero.",
+        "tag": "simulación"
+      },
+      {
+        "n": "05",
+        "title": "Desconfiar del ajuste",
+        "desc": "Muestras, variabilidad, overfitting, validación y regularización.",
+        "tag": "con datos"
+      },
+      {
+        "n": "06",
+        "title": "Decidir con incertidumbre",
+        "desc": "Sigmoid, probabilidad, threshold y log-loss para clasificación.",
+        "tag": "proyecto"
+      }
+    ]
+  },
+  "programming": {
+    "title": "¿Necesito saber programar?",
+    "paragraphs": [
+      "Sí, a nivel básico. El curso asume que puedes leer y modificar Python sencillo: variables, funciones, listas, loops y condiciones. No usamos las seis semanas para enseñar sintaxis desde cero.",
+      "Trabajamos en Google Colab con NumPy y visualización. Python funciona como laboratorio para probar ideas, cambiar parámetros y observar resultados; el objetivo sigue siendo comprender la matemática que el código representa."
+    ],
+    "cards": [
+      {
+        "key": "Sí hace falta",
+        "value": "Álgebra elemental, funciones, lectura de gráficas y Python básico."
+      },
+      {
+        "key": "No hace falta",
+        "value": "Cálculo universitario sólido, álgebra lineal formal ni probabilidad avanzada."
+      },
+      {
+        "key": "Se reconstruye dentro",
+        "value": "Vectores, matrices, derivadas, gradiente, probabilidad y generalización."
+      }
+    ]
+  }
+}

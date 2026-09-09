@@ -1,0 +1,77 @@
+{
+  "eyebrow": "Tau Labs",
+  "title": "Exploraciones para pensar con modelos.",
+  "lede": "Notebooks y experimentos breves donde una pregunta matemática se desarrolla con gráficas, datos y cómputo. Puedes seguir la idea completa sin ejecutar nada; el código aparece cuando ayuda a probar, comparar o validar.",
+  "items": [
+    {
+      "n": "Lab 01",
+      "field": "Optimización",
+      "title": "¿Qué pasa si el paso es demasiado grande?",
+      "desc": "Seguimos una función de pérdida durante gradient descent y decidimos cuándo el learning rate acelera, oscila o hace divergir el proceso.",
+      "metrics": [
+        "gradient descent",
+        "learning rate"
+      ],
+      "figure": {
+        "kind": "sparkline",
+        "shape": "oscillation-damped",
+        "second": null
+      },
+      "caption": "pérdida por iteración"
+    },
+    {
+      "n": "Lab 02",
+      "field": "Estadística",
+      "title": "¿Cuántas observaciones hacen falta?",
+      "desc": "Simulamos muestras de distintos tamaños y observamos cómo cambia el error de una estimación antes de decidir si más datos realmente compran precisión.",
+      "metrics": [
+        "muestreo",
+        "error"
+      ],
+      "figure": {
+        "kind": "sparkline",
+        "shape": "inverse-sqrt",
+        "second": null
+      },
+      "caption": "error vs. tamaño muestral"
+    },
+    {
+      "n": "Lab 03",
+      "field": "Regresión",
+      "title": "Un buen ajuste también puede engañar",
+      "desc": "Comparamos una predicción aparentemente correcta con sus residuos y decidimos si la estructura que queda sin explicar invalida el modelo.",
+      "metrics": [
+        "residuos",
+        "validación"
+      ],
+      "figure": {
+        "kind": "sparkline",
+        "shape": "trending-residuals",
+        "second": null
+      },
+      "caption": "residuos vs. predicción"
+    },
+    {
+      "n": "Lab 04",
+      "field": "Datos",
+      "title": "¿Qué parte de la señal aprendió el modelo?",
+      "desc": "Separamos variación, ruido y tendencia para discutir qué patrón conserva una predicción y qué información estamos descartando al suavizar.",
+      "metrics": [
+        "ruido",
+        "modelo"
+      ],
+      "figure": {
+        "kind": "sparkline",
+        "shape": "noisy-vs-smooth",
+        "second": "noisy"
+      },
+      "caption": "datos vs. predicción"
+    }
+  ],
+  "closing": {
+    "title": "Una exploración puede terminar en una respuesta o en una mejor pregunta.",
+    "body": "Tau Labs también conserva intentos que fallan: optimizaciones que divergen, residuos que delatan un modelo y supuestos que dejan de sostenerse. El fallo no se oculta cuando ayuda a entender el límite de una idea.",
+    "cta": "Ver cómo aprendemos",
+    "href": "/"
+  }
+}

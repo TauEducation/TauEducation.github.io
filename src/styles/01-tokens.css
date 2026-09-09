@@ -1,0 +1,46 @@
+/* Design tokens — from v2/tokens.json. Radius is 0. There are no shadows. */
+
+:root {
+  --ink: #191817;
+  --ink-deep: #14130f;
+  --ink-well: #131211;
+  --panel: #201f1d;
+  --panel-alt: #1c1b19;
+  --panel-soft: #1d1c1a;
+  --paper: #e9e7e2;
+
+  --text: #e9e7e2;
+  --text-muted: #b3aea5;
+  --text-dim: #8f8b83;
+  --text-faint: #5f5c56;
+  --formula: #86827b;
+
+  --ink-on-paper: #191817;
+  --ink-on-paper-muted: #4a463f;
+  --ink-on-paper-dim: #6b665e;
+
+  --amber: #e0b675;
+  --cyan: #6fc0d8;
+
+  --hairline: rgba(233, 231, 226, 0.14);
+  --hairline-soft: rgba(233, 231, 226, 0.1);
+  --hairline-strong: rgba(233, 231, 226, 0.24);
+  --hairline-paper: rgba(25, 24, 23, 0.16);
+
+  --font-display: "Anta", system-ui, "Segoe UI", sans-serif;
+  --font-text: "Didact Gothic", system-ui, "Segoe UI", sans-serif;
+  --font-mono: "JetBrains Mono", ui-monospace, "SFMono-Regular", Menlo, monospace;
+
+  --container: 1240px;
+  --pad-inline: clamp(20px, 5vw, 56px);
+  --section-y: clamp(56px, 11vh, 130px);
+  --gutter: 74px;
+
+  --reveal-ease: cubic-bezier(0.2, 0.7, 0.2, 1);
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}

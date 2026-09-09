@@ -1,124 +1,81 @@
-# tau.education — sitio v1
+# tau.education — sitio (v2)
 
-Sitio estático, sin backend y sin paso de build. Son archivos HTML + CSS + JS que
-se sirven tal cual desde cualquier hosting estático (Netlify, GitHub Pages, Cloudflare
-Pages, un bucket, …) o desde un servidor local.
+Generador estático sin framework. Node lee el contenido (JSON), lo valida contra
+un esquema, tipografía la matemática con **KaTeX en tiempo de build**, genera cada
+figura como **SVG inline a partir de números**, y escribe HTML plano en `dist/`.
+El cliente no descarga KaTeX, no ejecuta matemática y no hace ningún `fetch`.
 
 ## Correr en local
 
-Necesita servirse por HTTP (los módulos ES y `fetch` no funcionan con `file://`):
-
 ```bash
-cd site
-python -m http.server 8000
-# o:  npx serve .
+npm install
+npm run build        # genera dist/
+npm run serve        # sirve dist/ en http://localhost:4173
+# o de una:
+npm run dev
 ```
 
-Luego abrir <http://localhost:8000>.
+`npm run validate:content` valida los cuatro archivos de contenido sin construir.
+Un archivo que viola el esquema (o una regla que el esquema no puede expresar,
+como "los cuatro miembros de la familia deben ser idénticos a cuatro de las doce
+fórmulas") **rompe el build** nombrando el campo y el límite.
 
 ## Estructura
 
 ```
-site/
-  *.html                 una página por archivo
-  labs/                  Tau Labs (unidad + clase)
-  legal/                 avisos legales (stubs)
-  assets/css/            tokens.css · base.css · components.css · fonts.css
-  assets/js/             config.js · components.js · main.js · forms.js · academy.js · labs.js · labs-pyodide.js
-  assets/img/            tau-mark.svg
-  data/                  contenido que crece: academy.json · investigacion.json · labs/*.json · *.ipynb · *.csv
+src/
+  content/*.json        contenido + schema.json (fuente de la verdad editorial)
+  site.config.mjs        dominio, navegación, <head> por ruta
+  styles/*.css           01-tokens · 02-base · 03-components · fonts (se concatenan)
+  js/app.js              mejora progresiva: reveal, toggles, deriva de la marca
+  fonts/*.woff2          Anta · Didact Gothic · JetBrains Mono (subset latin+latin-ext)
+  assets/                marca τ (SVG limpio, sin filtros)
+  lib/
+    validate.mjs         ajv + reglas de campo cruzado
+    math.mjs             katex.renderToString
+    figures.mjs          XYFit · Sparkline · RemovableDiscontinuity
+    code.mjs             resaltado mínimo de Python (lectura, no ejecución)
+    templates/           layout · home · course · labs · notfound
+scripts/build.mjs        orquestador
+scripts/serve.mjs        server estático de preview (sin dependencias)
 ```
 
-## Qué se cambia y dónde
+## Rutas
 
-| Quiero cambiar… | Archivo |
-|---|---|
-| Correo, dominio, dirección, teléfono, redes | `assets/js/config.js` → `contact` |
-| Enlaces del menú o del footer, año de copyright | `assets/js/config.js` → `nav`, `footer`, `copyright` |
-| Texto del CTA del header | `assets/js/config.js` → `headerCta` |
-| Colores, tipografía, medidas | `assets/css/tokens.css` |
-| Fichas de Academy (añadir una referencia o abrir una disciplina) | `data/academy.json` |
-| Precedentes o biblioteca de Investigación | `data/investigacion.json` (y `investigacion.html` para la tabla de precedentes) |
-| El contenido de una clase de Labs | `data/labs/<slug>.json` + su `<slug>.ipynb` |
-| Copy de una página | el `.html` de esa página |
+| Ruta | Contenido |
+| --- | --- |
+| `/` | `content/home.json` |
+| `/cursos/fundamentos-matematicos-machine-learning/` | `content/course-fundamentos-matematicos-machine-learning.json` |
+| `/labs/` | `content/labs.json` |
+| `404.html` | `content/notfound.json` |
 
-El header, el footer, el bloque de contacto y el formulario de novedades se generan desde
-`config.js` mediante Web Components (`<tau-header>`, `<tau-footer>`, `<tau-contact>`,
-`<tau-newsletter>`). Cambiar un dato ahí se propaga a todas las páginas.
+## Cambiar contenido
 
-## Formularios (sin backend)
+Editar el `.json` correspondiente en `src/content/` y reconstruir. Los textos de
+navegación y `<head>` viven en `src/site.config.mjs`. Colores, tipografía y
+medidas en `src/styles/01-tokens.css`. Si el contenido necesita un campo nuevo,
+se añade primero a `schema.json` y a `CONTENT-MODEL.md` (un nivel arriba), no a un
+componente.
 
-`config.js → forms`:
+## Despliegue (GitHub Pages, plan gratuito)
 
-- `newsletterEndpoint` / `contactEndpoint`: si pones una URL de un servicio de formularios
-  (Formspree, Buttondown, Netlify Forms, un Worker…), el formulario hace `POST` ahí.
-- Si están vacíos, el formulario valida en el cliente y **abre un correo prellenado**
-  (`mailto:`) a `contact.email`.
+`.github/workflows/deploy.yml` construye en cada push a `main` y publica `dist/`.
+Una sola vez: **Settings → Pages → Build and deployment → Source: GitHub Actions**.
 
-## Tau Labs — cómo se ejecuta la clase
+`dist/` incluye `CNAME`, `.nojekyll`, `robots.txt` y `sitemap.xml`. El dominio
+sale de `site.config.mjs → site.domain`.
 
-1. **Estático**: el cuaderno se renderiza desde `data/labs/<slug>.json` con los resultados
-   ya calculados (consistentes con el dataset y con `CONTENT-SOURCES.md`).
-2. **Recalculado en el navegador** (automático si el sitio se sirve por HTTP): `labs.js` lee
-   el CSV y rehace el ajuste (Gauss-Newton) y la búsqueda de raíz (bisección) en JavaScript
-   puro; aparece un control de `T_sala` para ver la sensibilidad. Sin dependencias.
-3. **Python real (opcional)**: el botón «Ejecutar con Python real» carga Pyodide + numpy/
-   scipy/pandas desde el CDN (`config.integrations.pyodideIndexUrl`) **sólo al pulsarlo** y
-   ejecuta las celdas del `.ipynb`.
+## Qué se adaptó del diseño de referencia
 
-Sin JavaScript, la clase muestra un resumen y el enlace de descarga del `.ipynb`.
-
-## Añadir una clase de Labs
-
-1. Crear `data/labs/<slug>.json` (copiar `camara-termica.json` como plantilla).
-2. Crear `data/labs/<slug>.ipynb` con las mismas celdas de código.
-3. Copiar `labs/camara-termica.html` a `labs/<slug>.html` y cambiar `data-class="<slug>"`,
-   `<title>` y la descripción.
-4. Añadir la fila en la lista de `labs/index.html`.
-
-## Fuentes
-
-`assets/css/fonts.css` carga Anta, Didact Gothic e IBM Plex Mono desde Google Fonts.
-Para autoalojarlas: reemplazar el `@import` por `@font-face` locales (woff2, `font-display:swap`)
-y quitar los `<link rel="preconnect">` de los `<head>`.
-
-## Despliegue
-
-Este repo (`TauEducation/TauEducation.github.io`) **es** la raíz del sitio: los archivos
-del sitio están en la raíz del repo, no en un subdirectorio. Los enlaces son absolutos
-(`/academy.html`), lo cual es correcto porque se sirve en la raíz de `tau.education`.
-
-Ya viene preparado:
-
-- `CNAME` — dominio personalizado (`tau.education`).
-- `.nojekyll` — evita el procesado Jekyll; los archivos se sirven tal cual.
-- `404.html` — GitHub Pages lo sirve automáticamente en rutas desconocidas.
-- `robots.txt`, `sitemap.xml`.
-
-### Publicar (una sola vez)
-
-1. `git push` a `main` (ya configurado el remoto `origin`).
-2. **Settings → Pages → Build and deployment → Source: _Deploy from a branch_ → `main` / `(root)`.**
-   (En un repo `*.github.io` Pages se activa solo; sólo hay que confirmar rama y carpeta.)
-3. **Settings → Pages → Custom domain**: debe aparecer `tau.education` (lo toma del `CNAME`).
-   Marcar **Enforce HTTPS** cuando GitHub emita el certificado (unos minutos).
-4. DNS del dominio:
-   - `A` de `@` → `185.199.108.153`, `185.199.109.153`, `185.199.110.153`, `185.199.111.153`
-   - `CNAME` de `www` → `taueducation.github.io`
-   - (si el registrador soporta `ALIAS`/`ANAME` en el ápice, apuntarlo a `taueducation.github.io`)
-
-Cada `git push` a `main` republica el sitio en 1–2 minutos.
-
-Cambiar el dominio más adelante: editar `CNAME`, `robots.txt`, `sitemap.xml` y
-`contact.domain` / `contact.url` en `assets/js/config.js`.
-
-### Cualquier otro hosting estático
-
-Subir el contenido del repo a la raíz (Netlify, Cloudflare Pages, un bucket S3+CDN…).
-Configurar `404.html` como página de error si el hosting lo pide.
-
-## Documentos de handoff
-
-El brief editorial, `IMPLEMENTATION.md`, `content-slots.json`, el mockup de diseño y las
-fuentes viven **fuera** de este repo (son internos y este repo es público). Se conservan
-en el directorio de trabajo local, un nivel arriba.
+- El runtime de componentes del `.dc.html` (`<x-dc>`, `sc-for`, `renderVals`) no se
+  portó; sólo se tomaron valores. El diseño usa estilos inline; aquí es CSS normal.
+- KaTeX pasa de auto-render en cliente a `renderToString` en build (sin destello de
+  `\[ ... \]`, sin JS de matemática en el cliente).
+- Fuentes: de Google Fonts a self-host con subsets.
+- El catálogo de fórmulas alterna con un checkbox + CSS (funciona sin JavaScript);
+  la celda de código es `<details>` (plegada por defecto, nativa).
+- La marca τ de marca de agua se mantiene **dentro de los márgenes de la página**
+  (corrección heredada de v1), no sangrando fuera del borde.
+- Cada figura se dibuja de números reales: el ajuste del notebook es un ajuste por
+  mínimos cuadrados sobre los puntos observados; cada sparkline usa el generador
+  que corresponde a la matemática de ese lab.

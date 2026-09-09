@@ -1,0 +1,211 @@
+/* Reset, elements, typography, layout primitives. */
+
+html {
+  -webkit-text-size-adjust: 100%;
+}
+
+body {
+  margin: 0;
+  background: var(--ink);
+  color: var(--text-muted);
+  font: 400 16.5px/1.75 var(--font-text);
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+  overflow-x: hidden;
+}
+
+img,
+svg {
+  max-width: 100%;
+  display: block;
+}
+
+a {
+  color: var(--text);
+  text-decoration: none;
+  transition: color 0.18s ease, border-color 0.18s ease, background 0.18s ease;
+}
+a:hover {
+  color: var(--amber);
+}
+
+::selection {
+  background: var(--amber);
+  color: var(--ink);
+}
+
+:focus-visible {
+  outline: 2px solid var(--cyan);
+  outline-offset: 3px;
+}
+
+p {
+  margin: 0 0 1em;
+  text-wrap: pretty;
+}
+p:last-child {
+  margin-bottom: 0;
+}
+
+h1,
+h2,
+h3 {
+  font-family: var(--font-display);
+  font-weight: 400;
+  margin: 0;
+}
+
+.h1 {
+  font-size: clamp(40px, 6.6vw, 100px);
+  line-height: 1.02;
+  letter-spacing: -0.02em;
+  color: var(--text);
+  text-wrap: balance;
+  max-width: 17ch;
+}
+.hero__title { max-width: 17ch; }
+
+.h2 {
+  font-size: clamp(28px, 3.4vw, 46px);
+  line-height: 1.12;
+  letter-spacing: -0.015em;
+  color: var(--text);
+  text-wrap: balance;
+  max-width: 24ch;
+}
+.h2--sm {
+  font-size: clamp(24px, 2.8vw, 36px);
+  line-height: 1.15;
+  max-width: none;
+}
+
+.h3 {
+  font-size: clamp(18px, 2.2vw, 30px);
+  line-height: 1.18;
+  color: var(--text);
+  text-wrap: balance;
+}
+
+.lede {
+  font-size: clamp(16px, 1.4vw, 19px);
+  line-height: 1.72;
+  color: var(--text-muted);
+  max-width: 52ch;
+}
+.lede--wide { max-width: 60ch; }
+.h1 + .lede,
+.h2 + .lede { margin-top: clamp(20px, 3vh, 28px); }
+.lede + .tiles,
+.lede + .notfound__exits { margin-top: clamp(30px, 5vh, 52px); }
+
+.prose {
+  font-size: 16.5px;
+  line-height: 1.75;
+  color: var(--text-muted);
+  max-width: 64ch;
+}
+.prose p + p { margin-top: 0.9em; }
+.dim { color: var(--text-dim); }
+
+.eyebrow {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex-wrap: wrap;
+  font-family: var(--font-mono);
+  font-size: 11px;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--text-dim);
+  margin: 0 0 22px;
+}
+.eyebrow--amber { color: var(--amber); letter-spacing: 0.18em; }
+.eyebrow--cyan { color: var(--cyan); }
+.eyebrow__brand { color: var(--amber); }
+.eyebrow__rule {
+  width: 46px;
+  height: 1px;
+  background: var(--hairline-strong);
+}
+
+/* --- layout --- */
+
+.wrap {
+  max-width: var(--container);
+  margin: 0 auto;
+  padding-inline: var(--pad-inline);
+}
+
+.section {
+  padding-block: var(--section-y);
+  border-bottom: 1px solid var(--hairline-soft);
+  position: relative;
+  overflow: hidden;
+}
+.section--deep { background: var(--ink-deep); }
+.section--paper {
+  background: var(--paper);
+  color: var(--ink-on-paper);
+  border-bottom-color: var(--hairline-paper);
+}
+.section--flush-top { padding-top: clamp(36px, 7vh, 80px); }
+.section--hero-tight { padding-block: clamp(48px, 10vh, 116px); }
+
+.split {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: clamp(24px, 5vw, 72px);
+  align-items: end;
+}
+.split--even { align-items: start; }
+
+.measure { max-width: 62ch; }
+
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+.skip-link {
+  position: absolute;
+  left: 12px;
+  top: -60px;
+  z-index: 100;
+  background: var(--paper);
+  color: var(--ink);
+  padding: 10px 16px;
+  font: 500 12px/1 var(--font-mono);
+  transition: top 0.15s ease;
+}
+.skip-link:focus { top: 12px; color: var(--ink); }
+
+/* --- watermark: a quiet reference mark that stays inside the page bounds
+       (never bleeding past the edge — a v1 correction we keep) --- */
+.watermark {
+  position: absolute;
+  z-index: 0;
+  pointer-events: none;
+  opacity: 0.05;
+  width: min(38vw, 460px);
+  height: auto;
+  right: clamp(16px, 4vw, 64px);
+  top: 8%;
+}
+.wrap,
+.section > .wrap { position: relative; z-index: 1; }
+
+@media (prefers-reduced-motion: no-preference) {
+  .watermark--drift { animation: tau-drift 22s ease-in-out infinite; }
+}
+
+@keyframes tau-drift {
+  0%, 100% { transform: translate3d(0, 0, 0) rotate(0deg); }
+  50% { transform: translate3d(0, -14px, 0) rotate(-0.6deg); }
+}
