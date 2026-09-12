@@ -18,6 +18,7 @@ export const nav = [
   { label: "Inicio", href: "/" },
   { label: "Academy", href: `/cursos/${COURSE_SLUG}/` },
   { label: "Labs", href: "/labs/" },
+  { label: "Workshops", href: "/workshops/" },
 ];
 
 export const headerCta = { label: "Explorar el curso", href: `/cursos/${COURSE_SLUG}/` };
@@ -54,5 +55,19 @@ export const routes = {
     tag: "404",
     title: "Este punto no está en el dominio — Tau Education",
     description: "La página no existe: el límite existe, pero el valor no.",
+  },
+  workshopsIndex: {
+    out: "workshops/index.html",
+    path: "/workshops/",
+    tag: "Workshops",
+    title: "Workshops | Tau Education",
+    description: "Workshops en vivo y gratuitos de Tau Education para aprender la matemática detrás de Machine Learning.",
+  },
+  privacidad: {
+    out: "privacidad/index.html",
+    path: "/privacidad/",
+    tag: "Privacidad",
+    title: "Aviso de Privacidad | Tau Education",
+    description: "Aviso de privacidad de Tau Education.",
   },
 };

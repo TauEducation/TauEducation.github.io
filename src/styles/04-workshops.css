@@ -1,0 +1,485 @@
+/* Workshop funnel (landing + confirmation) — recreates
+   v3/Tau Workshop Landing v4.dc.html and Tau Workshop Confirmado.dc.html
+   using the site's existing tokens (colors, fonts, radius:0, no shadows).
+   Scoped under body.wsp; the /workshops catalog reuses the site's normal
+   .section/.tile/.btn primitives instead (see the .workshop-card rules at
+   the bottom). */
+
+/* Sticky footer: the footer always sits at the page's bottom edge — flush
+   against it on a short page (confirmation), pushed down normally on a tall
+   one (landing, which already exceeds 100vh so this has no visible effect
+   there). .wsp-page is everything except the footer. */
+body.wsp {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  background: var(--ink);
+  color: var(--text-muted);
+  font: 400 16px/1.6 var(--font-text);
+  -webkit-font-smoothing: antialiased;
+  overflow-x: hidden;
+}
+.wsp-page { flex: 1 1 auto; display: flex; flex-direction: column; }
+body.wsp a { text-decoration: none; color: var(--text); transition: color 0.18s ease, background 0.18s ease; }
+body.wsp a:hover { color: var(--amber); }
+body.wsp ::selection { background: var(--amber); color: var(--ink); }
+
+.wsp-brand-bar { flex: none; }
+.wsp-brand {
+  max-width: 1180px;
+  margin: 0 auto;
+  padding: 16px clamp(20px, 5vw, 44px) 0;
+  display: flex;
+  align-items: center;
+  gap: 9px;
+}
+.wsp-mark { opacity: 0.8; flex: none; }
+.wsp-brand__text { font-family: var(--font-display); font-size: 13px; letter-spacing: 0.02em; color: var(--text-dim); }
+
+.wsp-wrap { max-width: 1180px; margin: 0 auto; padding-inline: clamp(20px, 5vw, 44px); }
+.wsp-wrap--narrow { max-width: 760px; }
+
+.wsp-block { padding-block: clamp(26px, 4vh, 52px); }
+.wsp-block--sunken { background: var(--ink-deep); border-block: 1px solid var(--hairline-soft); }
+.wsp-block + .wsp-block--sunken,
+.wsp-block--sunken + .wsp-block { border-top: 1px solid var(--hairline-soft); }
+
+.wsp-eyebrow {
+  font-family: var(--font-mono);
+  font-size: 10.5px;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--amber);
+  margin: 0 0 16px;
+}
+.wsp-eyebrow--cyan { color: var(--cyan); }
+
+.wsp-h1 {
+  font-family: var(--font-display);
+  font-weight: 400;
+  font-size: clamp(30px, 4.2vw, 46px);
+  line-height: 1.1;
+  letter-spacing: -0.015em;
+  color: var(--text);
+  margin: 0 0 18px;
+  max-width: 17ch;
+}
+.wsp-h1--xl { font-size: clamp(40px, 7vw, 76px); line-height: 1; letter-spacing: -0.02em; max-width: none; margin-bottom: 20px; }
+.wsp-h2 { font-family: var(--font-display); font-weight: 400; font-size: clamp(22px, 2.8vw, 30px); line-height: 1.18; color: var(--text); margin: 0 0 14px; }
+.wsp-h2--narrow { max-width: 22ch; }
+.wsp-h3 { font-family: var(--font-display); font-weight: 400; font-size: clamp(19px, 2.2vw, 25px); color: var(--text); margin: 0 0 16px; }
+
+.wsp-lede { font-size: 16.5px; line-height: 1.6; color: var(--text-muted); max-width: 46ch; margin: 0 0 20px; }
+.wsp-lede-sm { font-size: 15.5px; line-height: 1.6; color: var(--text); margin: 0 0 10px; }
+.wsp-body { font-size: 15px; line-height: 1.6; color: var(--text-muted); margin: 0 0 18px; max-width: 46ch; }
+.wsp-body--dim { color: var(--text-dim); font-size: 14.5px; }
+
+.wsp-takeaways { border-left: 2px solid rgba(224, 182, 117, 0.6); padding-left: 16px; margin-bottom: 20px; max-width: 46ch; }
+.wsp-takeaways__label { font-family: var(--font-mono); font-size: 10px; letter-spacing: 0.16em; text-transform: uppercase; color: var(--text-dim); margin: 0 0 7px; }
+.wsp-takeaways__text { font-size: 15px; line-height: 1.55; color: var(--text); margin: 0; }
+
+.wsp-meta { font-family: var(--font-mono); font-size: 11.5px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--text-muted); margin: 0 0 12px; }
+.wsp-note { font-size: 14px; line-height: 1.55; color: var(--text-dim); max-width: 42ch; margin: 0 0 18px; }
+
+/* ------------------------------- hero grid ------------------------------- */
+
+.wsp-hero__grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+  gap: clamp(28px, 4vw, 56px);
+  align-items: start;
+  padding-block: clamp(24px, 4vh, 40px);
+}
+
+.wsp-form-shell {
+  border: 1px solid var(--hairline);
+  background: var(--panel-soft);
+  padding: clamp(18px, 2.4vw, 24px);
+}
+.wsp-form-shell--closed { display: flex; align-items: center; }
+.wsp-form-noscript,
+.wsp-form-closed { font-size: 14px; line-height: 1.6; color: var(--text-dim); margin: 0; }
+
+/* ------------------------------- journey block --------------------------- */
+
+.wsp-journey__head {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: clamp(20px, 4vw, 48px);
+  align-items: start;
+  margin-bottom: clamp(26px, 4vh, 38px);
+}
+.wsp-question { font-family: var(--font-display); font-size: clamp(16px, 1.8vw, 21px); line-height: 1.3; color: var(--amber); margin: 0; max-width: 30ch; }
+
+.wsp-diagram-shell { border-block: 1px solid var(--hairline-strong); padding-block: clamp(14px, 2.5vh, 26px); }
+.wsp-diagram { width: 100%; height: auto; display: block; }
+.wsp-diagram--closed { max-width: 520px; margin-left: auto; }
+
+.wsp-formula-row { display: flex; flex-wrap: wrap; gap: 14px; margin-top: clamp(12px, 2vh, 20px); }
+.wsp-formula { flex: 1 1 150px; display: flex; flex-direction: column; gap: 7px; }
+.wsp-formula__label { font-family: var(--font-mono); font-size: 10px; letter-spacing: 0.16em; text-transform: uppercase; color: var(--text-dim); }
+.wsp-formula--amber .wsp-formula__label { color: var(--amber); }
+.wsp-formula__tex { color: var(--text-muted); font-size: 17px; }
+
+.wsp-closing { margin-top: clamp(20px, 3vh, 28px); max-width: 52ch; }
+.wsp-closing .wsp-body { margin-bottom: 8px; }
+.wsp-closing__q { font-family: var(--font-display); font-size: clamp(16px, 1.9vw, 22px); color: var(--amber); margin: 0; }
+
+/* ------------------------------- fit + cta -------------------------------- */
+
+.wsp-fit__grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: clamp(28px, 4vw, 56px); align-items: start; padding-block: clamp(32px, 5vh, 52px); }
+.wsp-fit__list { display: flex; flex-direction: column; gap: 9px; font-size: 15px; line-height: 1.55; color: var(--text-muted); max-width: 40ch; margin-bottom: 16px; }
+
+.wsp-highlight { border-left: 2px solid rgba(224, 182, 117, 0.6); padding-left: 16px; margin-bottom: 24px; }
+.wsp-highlight__l1 { font-size: 15px; line-height: 1.5; color: var(--text); margin: 0 0 4px; }
+.wsp-highlight__l2 { font-size: 15px; line-height: 1.5; color: var(--amber); margin: 0; }
+
+/* body.wsp a { color: var(--text) } outweighs a bare .wsp-btn class on
+   specificity alone (an <a class="wsp-btn">) — every rule that sets this
+   button's text color has to match that weight. */
+body.wsp a.wsp-btn,
+.wsp-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 14px;
+  background: var(--paper);
+  color: var(--ink);
+  padding: 15px 22px;
+  font-size: 15.5px;
+  min-height: 50px;
+  white-space: nowrap;
+  border: 0;
+  cursor: pointer;
+  font-family: var(--font-text);
+}
+body.wsp a.wsp-btn:hover,
+.wsp-btn:hover { background: var(--amber); color: var(--ink); }
+body.wsp a.wsp-btn--ghost,
+.wsp-btn--ghost { background: transparent; color: var(--text); border: 1px solid var(--hairline-strong); }
+body.wsp a.wsp-btn--ghost:hover,
+.wsp-btn--ghost:hover { background: transparent; border-color: var(--amber); color: var(--amber); }
+.wsp-btn--sm { padding: 11px 16px; font-size: 13.5px; min-height: 44px; flex: none; }
+.wsp-btn--disabled { opacity: 0.45; cursor: not-allowed; pointer-events: none; }
+.wsp-btn__arrow, .wsp-btn span[aria-hidden] { font-family: var(--font-mono); }
+.wsp-btn[disabled] { opacity: 0.6; cursor: not-allowed; }
+
+.wsp-instructor { display: flex; gap: 12px; align-items: center; margin-top: 22px; font-family: var(--font-mono); font-size: 10.5px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--text-dim); }
+.wsp-instructor__name { color: var(--text); }
+
+/* --------------------------------- FAQ ------------------------------------ */
+
+.wsp-faq__item + .wsp-faq__item { border-top: 1px solid var(--hairline-soft); }
+.wsp-faq__q {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 14px;
+  background: transparent;
+  border: 0;
+  padding: 15px 2px;
+  text-align: left;
+  color: var(--text-muted);
+  font-size: 15px;
+  font-family: var(--font-text);
+  cursor: pointer;
+  min-height: 48px;
+}
+.wsp-faq__q:hover { color: var(--text); }
+.wsp-faq__sign { font-family: var(--font-mono); color: var(--cyan); }
+.wsp-faq__a { margin: 0 0 16px; padding: 0 2px; font-size: 14px; line-height: 1.65; color: var(--text-muted); max-width: 56ch; }
+
+/* -------------------------------- sticky CTA ------------------------------ */
+
+/* [hidden] and this class carry equal specificity (one attribute selector,
+   one class) — without :not([hidden]) here, `display: flex` always wins
+   over the UA's `[hidden]{display:none}` because this stylesheet loads
+   after it, so the JS toggle (sticky.hidden = …) would have no visible
+   effect at all. */
+.wsp-sticky[hidden] { display: none; }
+.wsp-sticky:not([hidden]) {
+  position: fixed;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 70;
+  background: rgba(19, 18, 17, 0.95);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border-top: 1px solid var(--hairline);
+  padding: 9px clamp(14px, 4vw, 22px);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+.wsp-sticky__meta { font-family: var(--font-mono); font-size: 10px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--text-dim); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+
+body.wsp--sticky-visible .wsp-footer { padding-bottom: 104px; }
+
+/* --------------------------------- footer ---------------------------------- */
+
+.wsp-footer {
+  max-width: 1180px;
+  margin: 0 auto;
+  padding: 22px clamp(20px, 5vw, 44px) 34px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16px;
+  justify-content: space-between;
+  align-items: center;
+  font-family: var(--font-mono);
+  font-size: 10.5px;
+  letter-spacing: 0.1em;
+  color: var(--text-dim);
+}
+/* Confirmation page only — same space-between distribution as the landing
+   page, just a shorter block (less top/bottom padding). */
+body.wsp--confirm .wsp-footer {
+  padding: 14px clamp(20px, 5vw, 44px) 18px;
+}
+body.wsp .wsp-footer a { color: var(--text-dim); }
+body.wsp .wsp-footer a:hover { color: var(--amber); }
+.wsp-footer__email { color: var(--cyan); }
+
+/* ---------------------------- confirmation hero ---------------------------- */
+
+.wsp-confirm-hero__grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: clamp(28px, 4vw, 56px); align-items: center; padding-block: clamp(28px, 5vh, 52px) clamp(30px, 5vh, 48px); }
+.wsp-confirm-eyebrow { display: flex; align-items: center; gap: 10px; margin-bottom: 18px; }
+.wsp-pulse { width: 9px; height: 9px; background: var(--amber); transform: rotate(45deg); display: inline-block; }
+.wsp-confirm-hero .wsp-eyebrow { margin: 0; }
+.wsp-confirm-hero__fig { justify-self: end; width: 100%; }
+/* The diagram column is naturally taller than the text column. Stretching
+   .wsp-rise to match that height (without touching the grid's own
+   align-items:center, which still centers the diagram as before) creates
+   the free space .wsp-confirm-hero__gap grows into. */
+.wsp-rise { align-self: stretch; display: flex; flex-direction: column; }
+.wsp-confirm-hero__top { flex: none; }
+/* The large gap the note sits in: grows to fill whatever room is left
+   between the top block and the CTA button, and centers the note inside it
+   — vertically centered in that space, left-aligned like the rest of the
+   column. Collapses to a normal small gap on mobile, where .wsp-rise has no
+   extra height to give it (single-column stack, no taller sibling). */
+.wsp-confirm-hero__gap {
+  flex: 0.4 1 auto;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: flex-start;
+  min-height: 24px;
+}
+/* Same text level as .wsp-lede above it here specifically — .wsp-note stays
+   the smaller/dimmer default everywhere else it's used (e.g. the landing
+   hero's "no necesitas instalar nada" line). */
+.wsp-confirm-hero__gap .wsp-note {
+  margin: 0;
+  font-size: 16.5px;
+  line-height: 1.6;
+  color: var(--text-muted);
+  max-width: 46ch;
+}
+
+/* -------------------------------- details strip ----------------------------- */
+
+/* Lives in the free space between the hero and the footer (which the sticky
+   footer rule above pins to the page's bottom edge) — grows to fill
+   whatever room is left and centers its row inside that space, rather than
+   sitting at a fixed padding right under the hero. */
+.wsp-details--center { flex: 1 1 auto; display: flex; flex-direction: column; justify-content: center; }
+
+/* No padding-block of its own — the parent .wsp-block already sets the
+   section's vertical rhythm; stacking both on a section this short (a
+   thin row above a now-compact footer) read as a huge empty block. */
+.wsp-details__row { display: flex; flex-wrap: wrap; gap: clamp(20px, 4vw, 44px); align-items: center; justify-content: space-between; }
+.wsp-details__group { display: flex; flex-wrap: wrap; gap: clamp(20px, 4vw, 44px); }
+.wsp-detail { display: flex; flex-direction: column; gap: 6px; }
+.wsp-detail__label { font-family: var(--font-mono); font-size: 9.5px; letter-spacing: 0.18em; text-transform: uppercase; color: var(--text-dim); }
+.wsp-detail__value { font-family: var(--font-display); font-size: 18px; color: var(--text); }
+.wsp-details__cta { display: flex; flex-direction: column; gap: 8px; }
+.wsp-details__note { font-size: 12px; color: var(--text-dim); max-width: 32ch; }
+
+/* ---------------------------- research CTA + form --------------------------- */
+
+/* Sits right under the hero's confirmation note — a wide bar, not a
+   compressed square, and left-aligned to match the rest of the hero copy. */
+.wsp-research-cta__btn {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 8px;
+  text-align: left;
+  width: 100%;
+  background: var(--paper);
+  color: var(--ink);
+  border: 0;
+  padding: 24px 28px;
+  flex: none;
+  /* Centers in whatever space is left after .wsp-confirm-hero__gap claims
+     its own share — so the button gets breathing room on both sides too,
+     instead of sitting flush under the note with all the slack left below it. */
+  margin-top: auto;
+  margin-bottom: auto;
+  cursor: pointer;
+  font-family: var(--font-text);
+}
+.wsp-research-cta__btn:hover,
+.wsp-research-cta__btn:focus-visible { background: var(--amber); }
+.wsp-research-cta__line1 { font-family: var(--font-display); font-size: clamp(16px, 1.9vw, 19px); line-height: 1.25; }
+.wsp-research-cta__line2 { font-size: 16.5px; line-height: 1.6; color: var(--ink-on-paper-muted); }
+
+.wsp-research__fields { display: flex; flex-direction: column; gap: 24px; margin-top: 24px; }
+
+.wsp-field { border: 0; padding: 0; margin: 0; }
+.wsp-field__label { display: block; font-family: var(--font-mono); font-size: 10px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--text-dim); margin-bottom: 10px; padding: 0; }
+
+.wsp-chip-row { display: flex; flex-wrap: wrap; gap: 8px; }
+.wsp-chip__input {
+  position: absolute;
+  width: 1px; height: 1px;
+  padding: 0; margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+.wsp-chip {
+  display: inline-flex;
+  border: 1px solid var(--hairline-strong);
+  background: transparent;
+  color: var(--text-muted);
+  padding: 12px 16px;
+  min-height: 44px;
+  align-items: center;
+  font-size: 13.5px;
+  cursor: pointer;
+  font-family: var(--font-text);
+}
+.wsp-chip__input:checked + .wsp-chip { border-color: var(--amber); background: var(--amber); color: var(--ink); }
+.wsp-chip__input:focus-visible + .wsp-chip { outline: 2px solid var(--cyan); outline-offset: 2px; }
+
+.wsp-field input[type="text"],
+.wsp-field input[type="tel"],
+.wsp-field textarea {
+  width: 100%;
+  background: var(--ink-well);
+  border: 1px solid var(--hairline);
+  color: var(--text);
+  padding: 13px 14px;
+  font-size: 16px;
+  font-family: var(--font-text);
+  min-height: 48px;
+}
+.wsp-field textarea { resize: vertical; min-height: auto; }
+.wsp-field input:focus-visible,
+.wsp-field textarea:focus-visible { border-color: var(--cyan); outline: none; }
+
+.wsp-hp { position: absolute; left: -9999px; width: 1px; height: 1px; overflow: hidden; }
+
+.wsp-research__success {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  border: 1px solid rgba(224, 182, 117, 0.4);
+  background: var(--panel);
+  padding: 26px 24px;
+  max-width: 560px;
+}
+.wsp-research__success-mark { width: 11px; height: 11px; flex: none; background: var(--amber); transform: rotate(45deg); display: inline-block; }
+.wsp-research__success .wsp-h3 { margin: 0 0 4px; font-size: 19px; }
+.wsp-research__success .wsp-body { margin: 0; max-width: none; }
+
+/* ----------------------------------- motion --------------------------------- */
+
+@media (prefers-reduced-motion: no-preference) {
+  .wsp-loop-path { animation: wsp-loop 9s linear infinite; }
+  .wsp-orbit-path { animation: wsp-orbit 16s linear infinite; }
+  .wsp-pulse { animation: wsp-breathe 3.2s ease-in-out infinite; }
+  .wsp-rise { animation: wsp-rise 0.5s ease both; }
+  .wsp-modal[open] { animation: wsp-modal-in 0.18s ease both; }
+  .wsp-modal[open]::backdrop { animation: wsp-fade-in 0.18s ease both; }
+}
+@keyframes wsp-loop { to { stroke-dashoffset: -140; } }
+@keyframes wsp-orbit { to { stroke-dashoffset: -160; } }
+@keyframes wsp-breathe { 0%, 100% { opacity: 0.35; } 50% { opacity: 1; } }
+@keyframes wsp-rise { from { opacity: 0; transform: translateY(14px); } to { opacity: 1; transform: none; } }
+@keyframes wsp-modal-in { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: none; } }
+@keyframes wsp-fade-in { from { opacity: 0; } to { opacity: 1; } }
+
+/* ------------------------------- registration modal ------------------------ */
+
+.wsp-modal {
+  border: 0;
+  background: transparent;
+  padding: 0;
+  overflow: visible;
+  max-width: min(480px, calc(100vw - 32px));
+  width: 100%;
+}
+/* The research popup has a lot more fields than the registration one. */
+.wsp-modal--wide { max-width: min(640px, calc(100vw - 32px)); }
+.wsp-modal::backdrop { background: rgba(10, 9, 8, 0.72); }
+
+/* .wsp-modal__panel stays overflow:visible so the close button can float
+   outside its edge; .wsp-modal__surface is the actual Tau-styled frame
+   (hero-style dark background + centered watermark) and clips the
+   watermark to its own box. `isolation: isolate` gives the surface its own
+   stacking context — the systeme.io iframe inside sets its own
+   position+transform (its stacking context), which without this could
+   otherwise out-rank the close button regardless of DOM order or z-index.
+   overflow-y:auto lets the taller (research) form scroll internally on
+   short viewports instead of being clipped or pushing off-screen. */
+.wsp-modal__panel { position: relative; padding: 0; }
+.wsp-modal__surface {
+  position: relative;
+  isolation: isolate;
+  overflow-x: hidden;
+  overflow-y: auto;
+  max-height: min(85vh, 800px);
+  background: var(--ink);
+  border: 1px solid var(--hairline-soft);
+  padding: clamp(24px, 5vw, 32px);
+}
+.wsp-modal__wm {
+  position: absolute;
+  z-index: 0;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: min(70%, 320px);
+  height: auto;
+  opacity: 0.05;
+  pointer-events: none;
+}
+.wsp-modal__wm--lg { width: min(90%, 460px); }
+.wsp-modal__panel .wsp-form-shell {
+  position: relative;
+  z-index: 1;
+  border: 0;
+  background: transparent;
+  padding: 0;
+  line-height: 0;
+}
+.wsp-modal__close {
+  position: absolute;
+  z-index: 1;
+  top: -20px;
+  right: -20px;
+  width: 44px;
+  height: 44px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--ink);
+  border: 1px solid var(--hairline-strong);
+  color: var(--text);
+  font-size: 20px;
+  line-height: 1;
+  cursor: pointer;
+}
+.wsp-modal__close:hover { border-color: var(--amber); color: var(--amber); }
+
+/* ============================ /workshops catalog ============================ */
+
+.tiles--workshops { grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); }
+.workshop-card { display: flex; flex-direction: column; gap: 10px; align-items: flex-start; }
+.workshop-card__meta { font-family: var(--font-mono); font-size: 11px; letter-spacing: 0.06em; color: var(--text-dim); margin: 0 0 6px; }

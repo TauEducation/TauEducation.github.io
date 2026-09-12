@@ -8,6 +8,18 @@ import { homePage } from "../src/lib/templates/home.mjs";
 import { coursePage } from "../src/lib/templates/course.mjs";
 import { labsPage } from "../src/lib/templates/labs.mjs";
 import { notFoundPage } from "../src/lib/templates/notfound.mjs";
+import { privacyPage } from "../src/lib/templates/privacy.mjs";
+import { workshopsIndexPage } from "../src/lib/templates/workshops-index.mjs";
+import { workshopLandingPage } from "../src/lib/templates/workshop.mjs";
+import { workshopConfirmedPage } from "../src/lib/templates/workshop-confirmed.mjs";
+import { workshopDocument } from "../src/lib/templates/workshop-layout.mjs";
+import {
+  loadWorkshops,
+  workshopPath,
+  workshopConfirmPath,
+  workshopOutFile,
+  workshopConfirmOutFile,
+} from "../src/lib/workshops.mjs";
 import { site, routes, COURSE_SLUG } from "../src/site.config.mjs";
 
 const HERE = dirname(fileURLToPath(import.meta.url));
@@ -57,6 +69,9 @@ if (content.course.slug !== COURSE_SLUG) {
 }
 log("all four files valid");
 
+const workshops = loadWorkshops(join(SRC, "content/workshops"));
+log(`${workshops.length} workshop(s) valid`);
+
 if (VALIDATE_ONLY) {
   console.log("\nContent OK.");
   process.exit(0);
@@ -86,6 +101,39 @@ write(
   routes.notfound.out,
   document({ route: routes.notfound, body: notFoundPage(content.notfound), footerData })
 );
+write(
+  routes.privacidad.out,
+  document({ route: routes.privacidad, body: privacyPage(), footerData })
+);
+write(
+  routes.workshopsIndex.out,
+  document({ route: routes.workshopsIndex, body: workshopsIndexPage(workshops), footerData })
+);
+
+for (const w of workshops) {
+  write(
+    workshopOutFile(w),
+    workshopDocument({
+      title: w.seo.title,
+      description: w.seo.description,
+      path: workshopPath(w),
+      workshopId: w.id,
+      body: workshopLandingPage(w),
+    })
+  );
+  write(
+    workshopConfirmOutFile(w),
+    workshopDocument({
+      title: `Registro confirmado — ${w.title} | Tau Education`,
+      description: w.seo.description,
+      path: workshopConfirmPath(w),
+      workshopId: w.id,
+      noindex: true,
+      bodyClass: "wsp--confirm",
+      body: workshopConfirmedPage(w),
+    })
+  );
+}
 
 /* ------------------------------------------------------------------ assets */
 
@@ -115,8 +163,9 @@ for (const f of readdirSync(katexFontsDir)) {
   if (f.endsWith(".woff2")) copyInto(join(katexFontsDir, f), "assets/fonts");
 }
 
-// client script
+// client scripts
 write("assets/app.js", readFileSync(join(SRC, "js/app.js"), "utf8"));
+write("assets/workshop.js", readFileSync(join(SRC, "js/workshop.js"), "utf8"));
 
 // marks + icons
 copyInto(join(SRC, "assets/tau-mark.svg"), "assets");
@@ -152,8 +201,11 @@ function lissajousSvg() {
 }
 
 function sitemap() {
-  const urls = [routes.home, routes.course, routes.labs].map(
+  const staticUrls = [routes.home, routes.course, routes.labs, routes.workshopsIndex, routes.privacidad].map(
     (r) => `  <url><loc>${site.origin}${r.path}</loc></url>`
   );
+  // confirmado pages are noindex and intentionally excluded
+  const workshopUrls = workshops.map((w) => `  <url><loc>${site.origin}${workshopPath(w)}</loc></url>`);
+  const urls = staticUrls.concat(workshopUrls);
   return `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n${urls.join("\n")}\n</urlset>\n`;
 }

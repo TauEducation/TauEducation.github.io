@@ -7,6 +7,7 @@ function navLinks(currentTag) {
       const active =
         (item.label === "Academy" && currentTag === "Academy") ||
         (item.label === "Labs" && currentTag === "Labs") ||
+        (item.label === "Workshops" && currentTag === "Workshops") ||
         (item.label === "Inicio" && currentTag === "Inicio");
       return html`<a href="${item.href}"${raw(active ? ' aria-current="page"' : "")}>${item.label}</a>`;
     })

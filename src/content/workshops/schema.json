@@ -1,0 +1,206 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://tau.education/schemas/workshop.json",
+  "title": "Tau Education — workshop registry entry",
+  "description": "One file per workshop in src/content/workshops/*.json (except schema.json itself). Validated at build time before any HTML is generated.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "id",
+    "slug",
+    "title",
+    "shortDescription",
+    "status",
+    "date",
+    "time",
+    "timezone",
+    "durationMinutes",
+    "locationLabel",
+    "instructor",
+    "registration",
+    "research",
+    "recording",
+    "seo",
+    "copy"
+  ],
+  "properties": {
+    "id": { "type": "string", "pattern": "^ws[0-9]{3}$" },
+    "slug": { "type": "string", "pattern": "^[a-z0-9]+(-[a-z0-9]+)*$", "minLength": 3, "maxLength": 80 },
+    "title": { "type": "string", "minLength": 1, "maxLength": 120 },
+    "shortDescription": { "type": "string", "minLength": 1, "maxLength": 240 },
+    "status": { "enum": ["upcoming", "live", "past", "recording"] },
+    "date": {
+      "description": "ISO date (YYYY-MM-DD) in the workshop's timezone, or null while TBD.",
+      "type": ["string", "null"],
+      "pattern": "^[0-9]{4}-[0-9]{2}-[0-9]{2}$"
+    },
+    "time": {
+      "description": "24h HH:MM in the workshop's timezone, or null while TBD.",
+      "type": ["string", "null"],
+      "pattern": "^([01][0-9]|2[0-3]):[0-5][0-9]$"
+    },
+    "timezone": { "type": "string", "minLength": 1 },
+    "durationMinutes": { "type": "integer", "minimum": 15, "maximum": 480 },
+    "locationLabel": { "type": "string", "minLength": 1, "maxLength": 40 },
+    "instructor": { "type": ["string", "null"] },
+    "registration": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["open", "systemeFormScriptId", "systemeFormScriptSrc", "crmTag"],
+      "properties": {
+        "open": { "type": "boolean" },
+        "systemeFormScriptId": { "type": "string", "minLength": 1 },
+        "systemeFormScriptSrc": { "type": "string", "format": "uri" },
+        "crmTag": { "type": "string", "minLength": 1 }
+      }
+    },
+    "research": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["enabled", "endpoint", "formVersion"],
+      "properties": {
+        "enabled": { "type": "boolean" },
+        "endpoint": { "type": "string", "format": "uri" },
+        "formVersion": { "type": "string", "minLength": 1 }
+      }
+    },
+    "recording": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["available", "youtubeId"],
+      "properties": {
+        "available": { "type": "boolean" },
+        "youtubeId": { "type": ["string", "null"] }
+      }
+    },
+    "seo": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["title", "description"],
+      "properties": {
+        "title": { "type": "string", "minLength": 1, "maxLength": 160 },
+        "description": { "type": "string", "minLength": 1, "maxLength": 300 }
+      }
+    },
+    "copy": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["landing", "confirmation"],
+      "properties": {
+        "landing": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["eyebrow", "h1", "subhead", "takeaways", "notebookNote", "journey", "fit", "experience", "faq", "ctaLabel"],
+          "properties": {
+            "eyebrow": { "type": "string" },
+            "h1": { "type": "string" },
+            "subhead": { "type": "string" },
+            "takeaways": {
+              "type": "object",
+              "additionalProperties": false,
+              "required": ["label", "text"],
+              "properties": { "label": { "type": "string" }, "text": { "type": "string" } }
+            },
+            "notebookNote": { "type": "string" },
+            "journey": {
+              "type": "object",
+              "additionalProperties": false,
+              "required": ["heading", "intro", "question", "formulas", "closingLead", "closingQuestion"],
+              "properties": {
+                "heading": { "type": "string" },
+                "intro": { "type": "string" },
+                "question": { "type": "string" },
+                "formulas": {
+                  "type": "array",
+                  "minItems": 1,
+                  "items": {
+                    "type": "object",
+                    "additionalProperties": false,
+                    "required": ["label", "tex"],
+                    "properties": {
+                      "label": { "type": "string" },
+                      "tex": { "type": "string" },
+                      "amber": { "type": "boolean" }
+                    }
+                  }
+                },
+                "closingLead": { "type": "string" },
+                "closingQuestion": { "type": "string" }
+              }
+            },
+            "fit": {
+              "type": "object",
+              "additionalProperties": false,
+              "required": ["heading", "bullets", "notFor"],
+              "properties": {
+                "heading": { "type": "string" },
+                "bullets": { "type": "array", "items": { "type": "string" }, "minItems": 1 },
+                "notFor": { "type": "string" }
+              }
+            },
+            "experience": {
+              "type": "object",
+              "additionalProperties": false,
+              "required": ["lead", "body", "highlight"],
+              "properties": {
+                "lead": { "type": "string" },
+                "body": { "type": "string" },
+                "highlight": {
+                  "type": "object",
+                  "additionalProperties": false,
+                  "required": ["line1", "line2"],
+                  "properties": { "line1": { "type": "string" }, "line2": { "type": "string" } }
+                }
+              }
+            },
+            "faq": {
+              "type": "array",
+              "minItems": 1,
+              "items": {
+                "type": "object",
+                "additionalProperties": false,
+                "required": ["q", "a"],
+                "properties": { "q": { "type": "string" }, "a": { "type": "string" } }
+              }
+            },
+            "ctaLabel": { "type": "string" }
+          }
+        },
+        "confirmation": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["eyebrow", "h1", "lead", "note", "calendarCtaLabel", "calendarNote", "secondaryForm"],
+          "properties": {
+            "eyebrow": { "type": "string" },
+            "h1": { "type": "string" },
+            "lead": { "type": "string" },
+            "note": { "type": "string" },
+            "calendarCtaLabel": { "type": "string" },
+            "calendarNote": { "type": "string" },
+            "secondaryForm": {
+              "type": "object",
+              "additionalProperties": false,
+              "required": ["triggerLine1", "triggerLine2", "eyebrow", "intro", "mlLabel", "pyLabel", "scaleOptions", "blockerLabel", "questionLabel", "whatsappLabel", "whatsappPlaceholder", "submitLabel", "successTitle", "successBody"],
+              "properties": {
+                "triggerLine1": { "type": "string" },
+                "triggerLine2": { "type": "string" },
+                "eyebrow": { "type": "string" },
+                "intro": { "type": "string" },
+                "mlLabel": { "type": "string" },
+                "pyLabel": { "type": "string" },
+                "scaleOptions": { "type": "array", "items": { "type": "string" }, "minItems": 2 },
+                "blockerLabel": { "type": "string" },
+                "questionLabel": { "type": "string" },
+                "whatsappLabel": { "type": "string" },
+                "whatsappPlaceholder": { "type": "string" },
+                "submitLabel": { "type": "string" },
+                "successTitle": { "type": "string" },
+                "successBody": { "type": "string" }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}
