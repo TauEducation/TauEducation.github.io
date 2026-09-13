@@ -22,7 +22,7 @@ function workshopCard(w) {
   <h3 class="h3">${w.title}</h3>
   <p class="prose">${w.shortDescription}</p>
   <p class="workshop-card__meta">${dateLine} · ${w.durationMinutes} min</p>
-  <a class="btn btn--primary btn--inline" href="${workshopPath(w)}"><span>Ver workshop</span><span class="arrow" aria-hidden="true">→</span></a>
+  <a class="btn btn--primary" href="${workshopPath(w)}"><span>Ver workshop</span><span class="arrow" aria-hidden="true">→</span></a>
 </div>`;
 }
 
