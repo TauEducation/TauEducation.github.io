@@ -61,9 +61,11 @@ ${raw(workshopBrand())}
       <p class="wsp-eyebrow">${c.eyebrow}</p>
       <h1 class="wsp-h1">${c.h1}</h1>
       <p class="wsp-lede">${c.subhead}</p>
+      <p class="wsp-lede">${c.subheadDetail}</p>
       <div class="wsp-takeaways">
         <p class="wsp-takeaways__label">${c.takeaways.label}</p>
         <p class="wsp-takeaways__text">${c.takeaways.text}</p>
+        <p class="wsp-takeaways__note">${c.takeaways.note}</p>
       </div>
       <p class="wsp-meta">${meta}</p>
       <p class="wsp-note">${c.notebookNote}</p>
@@ -122,6 +124,12 @@ ${raw(workshopBrand())}
 <div class="wsp-block wsp-block--sunken">
   <div class="wsp-wrap wsp-wrap--narrow">
     <div class="wsp-faq" data-faq-group>${raw(faqHtml)}</div>
+  </div>
+</div>
+
+<div class="wsp-block">
+  <div class="wsp-wrap wsp-wrap--narrow">
+    <p class="wsp-recording-notice">${c.recordingNotice}</p>
   </div>
 </div>
 

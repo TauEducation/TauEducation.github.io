@@ -4,12 +4,13 @@
   "title": "¿Qué significa que un modelo aprenda?",
   "shortDescription": "Workshop gratuito en vivo para descubrir cómo datos, predicción, error, derivadas y gradient descent se conectan dentro de un modelo de Machine Learning.",
   "status": "upcoming",
-  "date": null,
-  "time": null,
+  "date": "2026-09-27",
+  "time": "19:30",
   "timezone": "America/Mexico_City",
   "durationMinutes": 90,
   "locationLabel": "Google Meet",
-  "instructor": null,
+  "instructor": "Víctor Serrano",
+  "calendarUrl": "https://calendar.google.com/calendar/event?action=TEMPLATE&tmeid=MWwzdHJmcHQ0MjA3Nm80b2xtcWIzcmRjMzUgNjMzMzA1MGNjMDNkYjA4NDYzM2IzZDdkMmIwZmM1MWMxMzA3NDFlNDdmMDRhMjNkMTZjMTU2ODVlZWQ5MWFiN0Bn&tmsrc=6333050cc03db084633b3d7d2b0fc51c130741e47f04a23d16c15685eed91ab7%40group.calendar.google.com",
   "registration": {
     "open": true,
     "systemeFormScriptId": "form-script-tag-25425925",
@@ -33,15 +34,17 @@
     "landing": {
       "eyebrow": "Workshop gratuito en vivo",
       "h1": "¿Qué significa que un modelo aprenda?",
-      "subhead": "En 90 minutos construiremos el recorrido de un modelo —datos → predicción → error → ajuste— para entender por qué aparecen vectores, derivadas y gradient descent en Machine Learning.",
+      "subhead": "En 90 minutos seguiremos una sola pregunta hasta ver cómo distintas ideas matemáticas empiezan a conectarse.",
+      "subheadDetail": "Construiremos el recorrido de un modelo —representar, predecir, medir el error y ajustar— y veremos por qué aparecen vectores, funciones, derivadas y gradient descent como partes de una misma historia.",
       "takeaways": {
-        "label": "Al terminar podrás explicar:",
-        "text": "cómo un modelo representa información · cómo mide su error · cómo ajusta sus parámetros para mejorar"
+        "label": "Al terminar habrás recorrido una historia matemática completa:",
+        "text": "representar información → construir una predicción → medir un error → decidir cómo cambiar",
+        "note": "No estudiaremos estos conceptos como temas separados: cada uno aparecerá cuando el problema lo necesite."
       },
       "notebookNote": "Trabajaremos con un notebook interactivo en Python. No necesitas instalar nada.",
       "journey": {
         "heading": "De ejecutar un modelo a entender qué está pasando.",
-        "intro": "Álgebra, cálculo y optimización suelen aparecer como prerrequisitos separados. Aquí los veremos surgir dentro de una sola pregunta:",
+        "intro": "Álgebra, cálculo y optimización no son temas separados aquí: van a surgir, uno por uno, dentro de una sola pregunta, justo cuando el problema los necesite:",
         "question": "¿Cómo puede un modelo pasar de representar datos a corregir sus propios errores?",
         "formulas": [
           { "label": "Representar", "tex": "x" },
@@ -75,7 +78,8 @@
         { "q": "¿Necesito instalar algo?", "a": "No. Trabajaremos desde el navegador." },
         { "q": "¿Es un curso completo de Machine Learning?", "a": "No. Es un workshop de 90 minutos diseñado para entender las conexiones matemáticas que aparecen cuando un modelo aprende." }
       ],
-      "ctaLabel": "Reservar mi lugar"
+      "ctaLabel": "Reservar mi lugar",
+      "recordingNotice": "La sesión será grabada y transcrita con fines educativos y de mejora del programa."
     },
     "confirmation": {
       "eyebrow": "Registro confirmado",

@@ -77,9 +77,11 @@ body.wsp ::selection { background: var(--amber); color: var(--ink); }
 .wsp-takeaways { border-left: 2px solid rgba(224, 182, 117, 0.6); padding-left: 16px; margin-bottom: 20px; max-width: 46ch; }
 .wsp-takeaways__label { font-family: var(--font-mono); font-size: 10px; letter-spacing: 0.16em; text-transform: uppercase; color: var(--text-dim); margin: 0 0 7px; }
 .wsp-takeaways__text { font-size: 15px; line-height: 1.55; color: var(--text); margin: 0; }
+.wsp-takeaways__note { font-size: 13px; line-height: 1.5; color: var(--text-dim); margin: 8px 0 0; }
 
 .wsp-meta { font-family: var(--font-mono); font-size: 11.5px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--text-muted); margin: 0 0 12px; }
 .wsp-note { font-size: 14px; line-height: 1.55; color: var(--text-dim); max-width: 42ch; margin: 0 0 18px; }
+.wsp-recording-notice { font-size: 13px; line-height: 1.5; color: var(--text-dim); margin: 0; }
 
 /* ------------------------------- hero grid ------------------------------- */
 

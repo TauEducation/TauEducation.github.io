@@ -17,6 +17,7 @@
     "durationMinutes",
     "locationLabel",
     "instructor",
+    "calendarUrl",
     "registration",
     "research",
     "recording",
@@ -43,6 +44,11 @@
     "durationMinutes": { "type": "integer", "minimum": 15, "maximum": 480 },
     "locationLabel": { "type": "string", "minLength": 1, "maxLength": 40 },
     "instructor": { "type": ["string", "null"] },
+    "calendarUrl": {
+      "description": "A pre-made Google Calendar event link (private RSVP invite, may resolve to a page carrying the real Meet link) — used verbatim for the confirmation page's 'Añadir al calendario' CTA instead of the generated template link. Null falls back to a link generated from date/time. Never surfaced on the public landing page.",
+      "type": ["string", "null"],
+      "format": "uri"
+    },
     "registration": {
       "type": "object",
       "additionalProperties": false,
@@ -90,16 +96,18 @@
         "landing": {
           "type": "object",
           "additionalProperties": false,
-          "required": ["eyebrow", "h1", "subhead", "takeaways", "notebookNote", "journey", "fit", "experience", "faq", "ctaLabel"],
+          "required": ["eyebrow", "h1", "subhead", "subheadDetail", "takeaways", "notebookNote", "journey", "fit", "experience", "faq", "ctaLabel", "recordingNotice"],
           "properties": {
             "eyebrow": { "type": "string" },
             "h1": { "type": "string" },
             "subhead": { "type": "string" },
+            "subheadDetail": { "type": "string" },
+            "recordingNotice": { "type": "string" },
             "takeaways": {
               "type": "object",
               "additionalProperties": false,
-              "required": ["label", "text"],
-              "properties": { "label": { "type": "string" }, "text": { "type": "string" } }
+              "required": ["label", "text", "note"],
+              "properties": { "label": { "type": "string" }, "text": { "type": "string" }, "note": { "type": "string" } }
             },
             "notebookNote": { "type": "string" },
             "journey": {

@@ -120,9 +120,13 @@ export function formatWorkshopDate(w) {
   return `${cap} ${dt.getUTCDate()} de ${month}`;
 }
 
-/** "18:00" — or the centralized placeholder while the time is still TBD. */
+/** "7:30 PM" — from the stored 24h "19:30", or the placeholder while TBD. */
 export function formatWorkshopTime(w) {
-  return w.time || PLACEHOLDER_HORA;
+  if (!w.time) return PLACEHOLDER_HORA;
+  const [h, m] = w.time.split(":").map(Number);
+  const period = h >= 12 ? "PM" : "AM";
+  const h12 = ((h + 11) % 12) + 1;
+  return `${h12}:${String(m).padStart(2, "0")} ${period}`;
 }
 
 /**
@@ -165,11 +169,19 @@ function toGCalStamp(date) {
 }
 
 /**
- * Google Calendar "render" link built from registry data. Returns null when
- * date/time aren't set yet — there is nothing to add to a calendar for a TBD
- * session. Never includes the private Meet link.
+ * Google Calendar link for the confirmation page's "Añadir al calendario"
+ * CTA. Returns null when there's nothing usable yet — there is nothing to
+ * add to a calendar for a TBD session.
+ *
+ * Prefers `w.calendarUrl` when the registry provides one: a pre-made event
+ * link the client manages directly in their own Google Calendar (may
+ * resolve to a page carrying the real Meet link, gated behind RSVP — never
+ * surfaced on the public landing page, only here on /confirmado). Falls
+ * back to a generated "TEMPLATE" link built from date/time so a future
+ * workshop works before anyone has hand-built a calendar event for it.
  */
 export function googleCalendarUrl(w, siteOrigin) {
+  if (w.calendarUrl) return w.calendarUrl;
   if (!w.date || !w.time) return null;
   const start = zonedTimeToUtc(w.date, w.time, w.timezone);
   const end = new Date(start.getTime() + w.durationMinutes * 60 * 1000);
