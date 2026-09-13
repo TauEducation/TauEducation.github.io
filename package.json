@@ -8,7 +8,8 @@
     "build": "node scripts/build.mjs",
     "validate:content": "node scripts/build.mjs --validate-only",
     "serve": "node scripts/serve.mjs",
-    "dev": "node scripts/build.mjs && node scripts/serve.mjs"
+    "dev": "node scripts/build.mjs && node scripts/serve.mjs",
+    "test": "node tests/registration-window.test.mjs"
   },
   "engines": {
     "node": ">=16"

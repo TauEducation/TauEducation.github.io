@@ -19,6 +19,7 @@ import {
   workshopConfirmPath,
   workshopOutFile,
   workshopConfirmOutFile,
+  canRegister,
 } from "../src/lib/workshops.mjs";
 import { site, routes, COURSE_SLUG } from "../src/site.config.mjs";
 
@@ -118,6 +119,11 @@ for (const w of workshops) {
       description: w.seo.description,
       path: workshopPath(w),
       workshopId: w.id,
+      // Only meaningful while the workshop's own status/open flag would let
+      // registration happen at all (canRegister) — a workshop that's since
+      // flipped to past/closed has no reason to carry a client-side cutoff
+      // timer that would run forever hiding elements that don't exist.
+      registrationClosesAt: canRegister(w) ? w.registration.closesAt : null,
       body: workshopLandingPage(w),
     })
   );

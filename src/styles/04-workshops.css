@@ -139,6 +139,14 @@ body.wsp ::selection { background: var(--amber); color: var(--ink); }
 /* body.wsp a { color: var(--text) } outweighs a bare .wsp-btn class on
    specificity alone (an <a class="wsp-btn">) — every rule that sets this
    button's text color has to match that weight. */
+/* [hidden] must win over the rule below: same bug as .wsp-sticky (see its own
+   [hidden] rule further down) — an author `display` declaration always beats
+   the UA stylesheet's `[hidden]{display:none}`, regardless of source order,
+   so a `.wsp-btn` with the `hidden` attribute (the registration-cutoff CTAs,
+   toggled from workshop.js) would otherwise stay visible. */
+body.wsp a.wsp-btn[hidden],
+.wsp-btn[hidden] { display: none; }
+
 body.wsp a.wsp-btn,
 .wsp-btn {
   display: inline-flex;

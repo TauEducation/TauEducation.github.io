@@ -9,6 +9,11 @@
 
   var body = document.body;
   var workshopId = body.getAttribute("data-workshop-id");
+  // Set by the registration-cutoff block further down (if this page has one);
+  // read by the sticky-CTA block. Declared here so either block can run
+  // first — `var` is hoisted to the top of this whole IIFE regardless of
+  // where in the file it's assigned.
+  var registrationClosed = false;
 
   /* --- FAQ: one section open at a time -------------------------------- */
   var faqGroup = document.querySelector("[data-faq-group]");
@@ -99,12 +104,95 @@
   var sticky = document.querySelector("[data-sticky]");
   if (sticky) {
     var updateSticky = function () {
-      var show = window.scrollY > 480;
+      var show = window.scrollY > 480 && !registrationClosed;
       sticky.hidden = !show;
       body.classList.toggle("wsp--sticky-visible", show);
     };
     window.addEventListener("scroll", updateSticky, { passive: true });
     updateSticky();
+  }
+
+  /* --- registration cutoff: a purely time-based state, independent of the
+         workshop's status/open flag — reaching it must not mark the workshop
+         "past" (see isRegistrationCutoffPassed in workshops.mjs). Only
+         present on pages whose registry entry sets registration.closesAt
+         (see data-registration-closes-at in workshop-layout.mjs); a workshop
+         without one keeps the original always-on systeme.io embed untouched.
+         Runs a self-scheduling timer rather than polling, so a tab left open
+         across the cutoff updates live without a refresh.
+
+         KNOWN LIMITATION (static hosting, no SSR/cron, documented rather than
+         worked around): this whole block requires JS to run. A visitor with
+         JS disabled sees whatever this page's last build happened to guess
+         (baked into the `hidden` attributes below) — before the cutoff was
+         reached at build time, that's the open form; after, it's the closed
+         notice. There's no build scheduled exactly at the cutoff to correct a
+         stale guess for that visitor, since there's no server to run one. */
+  var closesAtAttr = body.getAttribute("data-registration-closes-at");
+  if (closesAtAttr) {
+    var closesAtMs = new Date(closesAtAttr).getTime();
+    var heroMount = document.querySelector("[data-hero-form-mount]");
+    var closedNotice = document.querySelector("[data-registration-closed-cutoff]");
+    var regTriggers = [].slice.call(document.querySelectorAll('[data-open-modal="registration"]'));
+    var heroMounted = false;
+
+    var mountHeroForm = function () {
+      if (heroMounted || !heroMount) return;
+      heroMounted = true;
+      var script = document.createElement("script");
+      script.id = heroMount.getAttribute("data-systeme-script-id");
+      script.src = heroMount.getAttribute("data-systeme-script-src");
+      heroMount.appendChild(script);
+    };
+
+    var applyRegistrationWindow = function () {
+      var closed = Date.now() >= closesAtMs;
+      registrationClosed = closed;
+      if (heroMount) heroMount.hidden = closed;
+      if (closedNotice) closedNotice.hidden = !closed;
+      regTriggers.forEach(function (el) { el.hidden = closed; });
+      if (closed) {
+        if (modals.registration && modals.registration.dialog.open) modals.registration.dialog.close();
+      } else {
+        mountHeroForm();
+      }
+      if (sticky) updateSticky();
+      return closed;
+    };
+
+    // Belt-and-suspenders for the edge case where the cutoff lands while the
+    // popup is already open (its trigger was visible a moment ago): even if
+    // reached through some other path, the popup itself can never mount
+    // systeme's script once closed.
+    if (modals.registration) {
+      var baseRegistrationOpen = modals.registration.open;
+      modals.registration.open = function (trigger) {
+        if (Date.now() >= closesAtMs) return;
+        baseRegistrationOpen(trigger);
+      };
+    }
+
+    var MAX_TIMEOUT_MS = 2147483647; // setTimeout's 32-bit signed delay cap (~24.8 days)
+    var scheduleNextCheck = function () {
+      var remaining = closesAtMs - Date.now();
+      if (remaining <= 0) { applyRegistrationWindow(); return; }
+      setTimeout(function () {
+        if (Date.now() >= closesAtMs) applyRegistrationWindow();
+        else scheduleNextCheck(); // still more than ~24.8 days out — check again later
+      }, Math.min(remaining, MAX_TIMEOUT_MS));
+    };
+
+    applyRegistrationWindow();
+    scheduleNextCheck();
+
+    // Browsers throttle (or fully suspend) timers in a backgrounded tab, so a
+    // tab left open but unfocused across the cutoff could miss the exact
+    // moment and only catch up once its timer eventually fires. Re-checking
+    // on every return to the tab means the worst case is "briefly stale while
+    // backgrounded", never "stale until the visitor manually refreshes".
+    document.addEventListener("visibilitychange", function () {
+      if (!document.hidden) applyRegistrationWindow();
+    });
   }
 
   /* --- UTM capture: persisted per workshop, survives the redirect to

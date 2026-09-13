@@ -4,7 +4,7 @@
 // footer. Everything else (meta tags, canonical, self-hosted fonts, KaTeX
 // CSS) follows the same conventions as the rest of the site.
 
-import { html, raw } from "../html.mjs";
+import { html, raw, esc } from "../html.mjs";
 import { site } from "../../site.config.mjs";
 
 const TAU_MARK = raw(
@@ -93,12 +93,26 @@ export function workshopFooter() {
  * @param {string} o.workshopId   registry id, exposed on <body> for workshop.js
  * @param {boolean} [o.noindex]   confirmation pages must never be indexed
  * @param {string} [o.bodyClass]  extra class on <body> for page-scoped hooks
+ * @param {string|null} [o.registrationClosesAt]  registration.closesAt, landing
+ *   pages only — exposes the absolute cutoff instant to workshop.js so it can
+ *   re-check registration state against the visitor's own clock. Never passed
+ *   for /confirmado: that page's own behavior never depends on the cutoff.
  */
-export function workshopDocument({ title, description, path, body, workshopId, noindex = false, bodyClass = "" }) {
+export function workshopDocument({
+  title,
+  description,
+  path,
+  body,
+  workshopId,
+  noindex = false,
+  bodyClass = "",
+  registrationClosesAt = null,
+}) {
   const canonical = site.origin + path;
   const robots = noindex
     ? `<meta name="robots" content="noindex, nofollow" />`
     : "";
+  const closesAtAttr = registrationClosesAt ? ` data-registration-closes-at="${esc(registrationClosesAt)}"` : "";
 
   return (
     "<!doctype html>\n" +
@@ -127,7 +141,7 @@ ${raw(robots)}
 <link rel="stylesheet" href="/assets/katex.min.css" />
 <link rel="stylesheet" href="/assets/styles.css" />
 </head>
-<body class="wsp ${raw(bodyClass)}" data-workshop-id="${workshopId}">
+<body class="wsp ${raw(bodyClass)}" data-workshop-id="${workshopId}"${raw(closesAtAttr)}>
 <div class="wsp-page">
 ${raw(body)}
 </div>

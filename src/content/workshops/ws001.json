@@ -15,7 +15,8 @@
     "open": true,
     "systemeFormScriptId": "form-script-tag-25425925",
     "systemeFormScriptSrc": "https://c448-dev.systeme.io/public/remote/page/443609542c3986e45c324e9cb20bed2c16368ed5.js",
-    "crmTag": "WS-001-Registered"
+    "crmTag": "WS-001-Registered",
+    "closesAt": "2026-09-27T19:00:00-06:00"
   },
   "research": {
     "enabled": true,
@@ -79,7 +80,14 @@
         { "q": "¿Es un curso completo de Machine Learning?", "a": "No. Es un workshop de 90 minutos diseñado para entender las conexiones matemáticas que aparecen cuando un modelo aprende." }
       ],
       "ctaLabel": "Reservar mi lugar",
-      "recordingNotice": "La sesión será grabada y transcrita con fines educativos y de mejora del programa."
+      "recordingNotice": "La sesión será grabada y transcrita con fines educativos y de mejora del programa.",
+      "registrationClosed": {
+        "eyebrow": "Registro cerrado",
+        "heading": "El registro para este workshop ha cerrado.",
+        "closingNote": "El workshop está por comenzar.",
+        "returnNotePrefix": "Si quieres enterarte de próximas sesiones de Tau Education, vuelve pronto a",
+        "returnLinkLabel": "tau.education/workshops"
+      }
     },
     "confirmation": {
       "eyebrow": "Registro confirmado",

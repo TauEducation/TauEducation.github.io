@@ -52,12 +52,17 @@
     "registration": {
       "type": "object",
       "additionalProperties": false,
-      "required": ["open", "systemeFormScriptId", "systemeFormScriptSrc", "crmTag"],
+      "required": ["open", "systemeFormScriptId", "systemeFormScriptSrc", "crmTag", "closesAt"],
       "properties": {
         "open": { "type": "boolean" },
         "systemeFormScriptId": { "type": "string", "minLength": 1 },
         "systemeFormScriptSrc": { "type": "string", "format": "uri" },
-        "crmTag": { "type": "string", "minLength": 1 }
+        "crmTag": { "type": "string", "minLength": 1 },
+        "closesAt": {
+          "description": "Absolute instant (RFC 3339 date-time, explicit UTC offset required — e.g. \"2026-09-27T19:00:00-06:00\") after which registration closes automatically, independent of any visitor's timezone. Null means no automatic cutoff. Reaching this instant does NOT change the workshop's `status` to \"past\" — see canRegister()/isRegistrationCutoffPassed() in workshops.mjs, which treat the registration window and the workshop lifecycle as independent.",
+          "type": ["string", "null"],
+          "format": "date-time"
+        }
       }
     },
     "research": {
@@ -171,7 +176,20 @@
                 "properties": { "q": { "type": "string" }, "a": { "type": "string" } }
               }
             },
-            "ctaLabel": { "type": "string" }
+            "ctaLabel": { "type": "string" },
+            "registrationClosed": {
+              "description": "Copy for the post-cutoff closed-registration state (see registration.closesAt). Optional: only required when a workshop sets a closesAt — enforced at build time in workshops.mjs, not here, since JSON Schema can't easily express 'required only if a sibling field is set' across the two branches of this file.",
+              "type": "object",
+              "additionalProperties": false,
+              "required": ["eyebrow", "heading", "closingNote", "returnNotePrefix", "returnLinkLabel"],
+              "properties": {
+                "eyebrow": { "type": "string" },
+                "heading": { "type": "string" },
+                "closingNote": { "type": "string" },
+                "returnNotePrefix": { "type": "string" },
+                "returnLinkLabel": { "type": "string" }
+              }
+            }
           }
         },
         "confirmation": {

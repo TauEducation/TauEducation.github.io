@@ -66,6 +66,9 @@ function crossFieldChecks(w) {
   if (!w.recording.available && w.status === "recording") {
     errors.push('status is "recording" but recording.available is false');
   }
+  if (w.registration.closesAt && !w.copy.landing.registrationClosed) {
+    errors.push("registration.closesAt is set but copy.landing.registrationClosed is missing");
+  }
   const flat = JSON.stringify(w);
   if (/[!¡]/.test(flat.replace(/"tex"\s*:\s*"[^"]*"/g, ""))) {
     errors.push("exclamation mark found in copy (banned site-wide)");
@@ -101,9 +104,30 @@ export function isPast(w) {
   return w.status === "past" || w.status === "recording";
 }
 
-/** Registration is only ever open on an upcoming workshop with the flag set. */
+/**
+ * Registration is only ever open on an upcoming workshop with the flag set.
+ * Deliberately independent of the time-based cutoff (see
+ * isRegistrationCutoffPassed): this is the "is the feature turned on at all"
+ * check, decided by editing content and rebuilding — not something that
+ * changes on its own as the clock ticks.
+ */
 export function canRegister(w) {
   return w.status === "upcoming" && w.registration.open;
+}
+
+/**
+ * Whether `w`'s registration window has closed at `now` — purely a function
+ * of the absolute `registration.closesAt` instant, independent of `status`.
+ * Reaching the cutoff must NOT flip a workshop to `status: "past"`: the
+ * session itself may still be upcoming or live while registration for it is
+ * closed (e.g. the 30 minutes right before it starts). `closesAt` is always
+ * an RFC 3339 instant with an explicit UTC offset (enforced by the schema's
+ * "date-time" format), so comparing epoch milliseconds here never depends on
+ * the visitor's or the build machine's local timezone.
+ */
+export function isRegistrationCutoffPassed(w, now = new Date()) {
+  if (!w.registration.closesAt) return false;
+  return now.getTime() >= new Date(w.registration.closesAt).getTime();
 }
 
 /**
@@ -127,6 +151,30 @@ export function formatWorkshopTime(w) {
   const period = h >= 12 ? "PM" : "AM";
   const h12 = ((h + 11) % 12) + 1;
   return `${h12}:${String(m).padStart(2, "0")} ${period}`;
+}
+
+/** "Domingo 27 de septiembre de 2026" — same as formatWorkshopDate, plus the
+ * year. Used only by the registration-closed notice, where the workshop's
+ * own live meta line (formatWorkshopDate, no year) isn't necessarily nearby
+ * on the page for context. Kept separate so the sitewide meta line's format
+ * doesn't change. */
+export function formatWorkshopDateWithYear(w) {
+  if (!w.date) return PLACEHOLDER_FECHA;
+  const [y] = w.date.split("-").map(Number);
+  return `${formatWorkshopDate(w)} de ${y}`;
+}
+
+/** "19:30–21:00" — 24h start–end range computed from `time` + `durationMinutes`.
+ * Used only by the registration-closed notice, matching how the exact cutoff
+ * copy was specified. Wraps past midnight (mod 24) rather than crossing into
+ * a second calendar day, which is fine for the sub-day durations workshops use. */
+export function formatWorkshopTimeRange24h(w) {
+  if (!w.time) return PLACEHOLDER_HORA;
+  const [h, m] = w.time.split(":").map(Number);
+  const pad2 = (n) => String(n).padStart(2, "0");
+  const stamp = (totalMin) => `${pad2(Math.floor(totalMin / 60) % 24)}:${pad2(totalMin % 60)}`;
+  const startMin = h * 60 + m;
+  return `${stamp(startMin)}–${stamp(startMin + w.durationMinutes)}`;
 }
 
 /**
